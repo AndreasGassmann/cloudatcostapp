@@ -1,0 +1,18 @@
+<ion-view view-title="Servers">
+  <ion-content>
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="refresh()">
+    </ion-refresher>
+    <ion-list>
+        <div ng-hide="servers.response.data.length > 0" class="item">No servers</div>
+        <a class="item item-thumbnail-left" ng-repeat="server in servers.response.data" href="#/tab/servers/{{server.id}}">
+          <img ng-src="{{getTemplateImage(server.packageid)}}">
+          <h2>{{server.lable}}</h2>
+          <p>{{server.status}}</p>
+          <p>{{server.template}}</p>
+          <p>{{server.ip}}</p>
+        </a>
+    </ion-list>
+  </ion-content>
+</ion-view>

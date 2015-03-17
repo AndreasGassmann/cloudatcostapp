@@ -1,0 +1,16 @@
+/* Empty. Add your own CSS if you like */
+[ac-chart] {
+    float:left;
+    width: 48%;
+    height: 400px;
+    margin: 0 1%;
+}
+
+#chart1 {
+    height: 400px;
+    width: 800px;
+}
+#chart2 {
+    height: 400px;
+    width: 800px;
+}

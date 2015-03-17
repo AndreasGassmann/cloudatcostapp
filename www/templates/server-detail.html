@@ -1,0 +1,40 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="{{server.lable}}">
+  <ion-content class="padding">
+    <ion-list>
+        <div class="item item-divider">
+            Recent Tasks
+        </div>
+        <ion-item ng-hide="serverTasks.length > 0" class="item" type="item-text-wrap">
+            No recent Tasks
+        </ion-item>
+        <ion-item ng-show="serverTasks.length > 0" class="item" ng-repeat="task in serverTasks | reverse" type="item-text-wrap">
+            {{task.action}}: {{task.status}} <span am-time-ago="task.finishtime*1000"></span>
+        </ion-item>
+        <div class="item item-divider">
+            Server Info
+        </div>
+        <ion-item class="item" ng-repeat="(key, value) in server" type="item-text-wrap">
+            {{key}}
+        <span class="item-note">
+          {{value}}
+        </span>
+        </ion-item>
+    </ion-list>
+      <ion-list>
+      <div class="button-bar">
+          <a ng-click="ServerPowerOn(server.id)" class="button button-positive">Power on</a>
+          <a ng-click="ServerPowerOff(server.id)" class="button button-positive">Power off</a>
+          <a ng-click="ServerReset(server.id)" class="button button-positive">Restart</a>
+      </div>
+      <button ng-click="getConsole(server.id)" class="button button-block button-positive">
+          Open Console
+      </button>
+      </ion-list>
+  </ion-content>
+</ion-view>
