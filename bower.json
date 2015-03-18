@@ -5,6 +5,5 @@
     "ionic": "driftyco/ionic-bower#1.0.0-rc.0"
   },
   "dependencies": {
-    "angular-moment": "~0.9.0"
   }
 }
