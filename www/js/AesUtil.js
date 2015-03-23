@@ -9,7 +9,7 @@ AesUtil.prototype.generateKey = function(salt, passPhrase) {
         CryptoJS.enc.Hex.parse(salt),
         { keySize: this.keySize, iterations: this.iterationCount });
     return key;
-}
+};
 
 AesUtil.prototype.encrypt = function(salt, iv, passPhrase, plainText) {
     var key = this.generateKey(salt, passPhrase);
@@ -18,7 +18,7 @@ AesUtil.prototype.encrypt = function(salt, iv, passPhrase, plainText) {
         key,
         { iv: CryptoJS.enc.Hex.parse(iv) });
     return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-}
+};
 
 AesUtil.prototype.decrypt = function(salt, iv, passPhrase, cipherText) {
     var key = this.generateKey(salt, passPhrase);
@@ -30,4 +30,4 @@ AesUtil.prototype.decrypt = function(salt, iv, passPhrase, cipherText) {
         key,
         { iv: CryptoJS.enc.Hex.parse(iv) });
     return decrypted.toString(CryptoJS.enc.Utf8);
-}
+};

@@ -1,41 +1,46 @@
 <ion-view view-title="Account">
-  <ion-content class="padding">
-    <ion-list>
-      <label class="item item-input">
-        <input ng-model="settings.email" type="email" placeholder="Email">
-      </label>
-      <label class="item item-input">
-        <input ng-model="settings.APIKey" type="{{settings.showAPIKey ? 'text' : 'password'}}" placeholder="API-Key">
-      </label>
-      <ion-toggle  ng-model="settings.showAPIKey">
-          Show API-Key
-      </ion-toggle>
-      <button ng-click="saveData()" class="button button-block button-positive">
-        Save
-      </button>
-      <div class="card">
-        <div class="item item-divider">Instructions</div>
-        <div class="item item-text-wrap">
-          Enter your CloudAtCost email and your API-Key above. The API-Key has to be generated in your cloudatcost.com Admin Panel. You will also need to set your API Access IP. Only connections from this IP will work (you may add more than one IP, separate them with a comma).
-        </div>
-      </div>
-      <button ng-click="deleteData()" class="button button-block button-positive">
-            Delete Account Info and Data
-        </button>
-        <button ng-click="getIP()" class="button button-block button-positive">
-            Get current IP
-        </button>
-      <div ng-show="currentIP" class="card">
-        <div class="item item-text-wrap">
-          {{currentIP}}
-        </div>
-      </div>
-        <a class="item" href="#" onclick="window.open('https://twitter.com/cloudatcost', '_blank', 'location=yes'); return false;">
-            CloudAtCost Twitter
-        </a>
-        <a class="item" href="#" onclick="window.open('https://twitter.com/cloudatcostapp', '_blank', 'location=yes'); return false;">
-            CloudAtCostApp Twitter
-        </a>
-    </ion-list>
-  </ion-content>
+    <ion-content class="padding">
+        <ion-list>
+            <label class="item item-input">
+                <input ng-model="settings.email" type="email" placeholder="Email">
+            </label>
+            <label class="item item-input">
+                <input ng-model="settings.APIKey" type="{{settings.showAPIKey ? 'text' : 'password'}}"
+                       placeholder="API-Key">
+            </label>
+            <ion-toggle ng-model="settings.showAPIKey">
+                Show API-Key
+            </ion-toggle>
+            <button ng-click="saveData()" class="button button-block button-positive">
+                Save
+            </button>
+            <div class="card">
+                <div class="item item-divider">Instructions</div>
+                <div class="item item-text-wrap">
+                    Enter your CloudAtCost email and your API-Key above. The API-Key has to be generated in your
+                    cloudatcost.com Admin Panel. You will also need to set your API Access IP. Only connections from
+                    this IP will work (you may add more than one IP, separate them with a comma).
+                </div>
+            </div>
+            <button ng-click="deleteData()" class="button button-block button-positive">
+                Delete Account Info and Data
+            </button>
+            <button ng-click="getIP()" class="button button-block button-positive">
+                Get current IP
+            </button>
+            <div ng-show="currentIP" class="card">
+                <div class="item item-text-wrap">
+                    {{currentIP}}
+                </div>
+            </div>
+            <a class="item" href="#"
+               onclick="window.open('https://twitter.com/cloudatcost', '_blank', 'location=yes'); return false;">
+                CloudAtCost Twitter
+            </a>
+            <a class="item" href="#"
+               onclick="window.open('https://twitter.com/cloudatcostapp', '_blank', 'location=yes'); return false;">
+                CloudAtCostApp Twitter
+            </a>
+        </ion-list>
+    </ion-content>
 </ion-view>

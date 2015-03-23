@@ -1,57 +1,57 @@
 angular.module('starter.services', [])
 
     .factory('Servers', function(dataStorage) {
-      var servers = {};
-      servers.response = dataStorage.getServers() || [];
-      return {
-        data: servers,
-        update: function (data) {
-          servers.response = data;
-          dataStorage.saveServers(data);
-        },
-        get: function(serverId) {
-          return _.find(servers.response.data, function(server){ return server.id == serverId; }) || [];
-        },
-        clear: function() {
-          servers.response = [];
-          dataStorage.clearStorageField("servers");
-        }
-      };
+        var servers = {};
+        servers.response = dataStorage.getServers() || [];
+        return {
+            data: servers,
+            update: function (data) {
+                servers.response = data;
+                dataStorage.saveServers(data);
+            },
+            get: function(serverId) {
+                return _.find(servers.response.data, function(server){ return server.id == serverId; }) || [];
+            },
+            clear: function() {
+                servers.response = [];
+                dataStorage.clearStorageField("servers");
+            }
+        };
     })
 
     .factory('Tasks', function(dataStorage) {
-      var tasks = {};
-      tasks.response = dataStorage.getTasks() || [];
-      return {
-        data: tasks,
-        update: function (data) {
-          tasks.response = data;
-          dataStorage.saveTasks(data);
-        },
-        get: function(serverId) {
-          return _.sortBy(_.where(tasks.response.data, function(task){ return task.serverid == serverId; }), 'finishtime') || [];
-        },
-        clear: function() {
-          tasks.response = [];
-          dataStorage.clearStorageField("tasks");
-        }
-      };
+        var tasks = {};
+        tasks.response = dataStorage.getTasks() || [];
+        return {
+            data: tasks,
+            update: function (data) {
+                tasks.response = data;
+                dataStorage.saveTasks(data);
+            },
+            get: function(serverId) {
+                return _.sortBy(_.filter(tasks.response.data, function(task){ return task.serverid == serverId; }), 'finishtime') || [];
+            },
+            clear: function() {
+                tasks.response = [];
+                dataStorage.clearStorageField("tasks");
+            }
+        };
     })
 
     .factory('Templates', function(dataStorage) {
-      var templates = {};
-      templates.response = dataStorage.getTemplates() || [];
-      return {
-        data: templates,
-        update: function (data) {
-          templates.response = data;
-          dataStorage.saveTemplates(data);
-        },
-        clear: function() {
-          templates.response = [];
-          dataStorage.clearStorageField("templates");
-        }
-      };
+        var templates = {};
+        templates.response = dataStorage.getTemplates() || [];
+        return {
+            data: templates,
+            update: function (data) {
+                templates.response = data;
+                dataStorage.saveTemplates(data);
+            },
+            clear: function() {
+                templates.response = [];
+                dataStorage.clearStorageField("templates");
+            }
+        };
     })
 
     .factory('dataRequestService', function($http, dataStorage, Servers, Tasks, Templates) {
@@ -170,94 +170,94 @@ angular.module('starter.services', [])
     })
 
     .factory('dataStorage', function(AES) {
-       var passphrase = "SECRET_PASS_PHRASE";
+        var passphrase = "SECRET_PASS_PHRASE";
 
-      return {
-        saveEmail: function(email) {
-          window.localStorage.setItem("email", AES.encrypt(email, passphrase));
-        },
-        saveAPIKey: function(APIKey) {
-          window.localStorage.setItem("APIKey", AES.encrypt(APIKey, passphrase));
-        },
-        saveResponseTime: function(responseTime) {
-          window.localStorage.setItem("responseTime", AES.encrypt(responseTime, passphrase));
-        },
-        saveServers: function(servers) {
-          window.localStorage.setItem("servers", AES.encrypt(JSON.stringify(servers), passphrase));
-        },
-        saveTasks: function(tasks) {
-          window.localStorage.setItem("tasks", AES.encrypt(JSON.stringify(tasks), passphrase));
-        },
-        saveTemplates: function(templates) {
-          window.localStorage.setItem("templates", AES.encrypt(JSON.stringify(templates), passphrase));
-        },
-        getEmail: function() {
-          if (window.localStorage.getItem("email")) {
-            return AES.decrypt(window.localStorage.getItem("email"), passphrase);
-          } else {
-            return "";
-          }
-        },
-        getAPIKey: function() {
-          if (window.localStorage.getItem("APIKey")) {
-            return AES.decrypt(window.localStorage.getItem("APIKey"), passphrase);
-          } else {
-            return "";
-          }
-        },
-        getResponseTime: function() {
-          if (window.localStorage.getItem("responseTime")) {
-            return AES.decrypt(window.localStorage.getItem("responseTime"), passphrase);
-          } else {
-            return "";
-          }
-        },
-        getServers: function() {
-          if (window.localStorage.getItem("servers")) {
-            return isJson(AES.decrypt(window.localStorage.getItem("servers"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("servers"), passphrase)) : "";
-          } else {
-            return [];
-          }
-        },
-        getTasks: function() {
-          if (window.localStorage.getItem("tasks")) {
-            return isJson(AES.decrypt(window.localStorage.getItem("tasks"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("tasks"), passphrase)) : "";
-          } else {
-            return [];
-          }
-        },
-        getTemplates: function() {
-          if (window.localStorage.getItem("templates")) {
-            return isJson(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) : "";
-          } else {
-            return [];
-          }
-        },
-        clearStorage: function() {
-          window.localStorage.removeItem("email");
-          window.localStorage.removeItem("APIKey");
-          window.localStorage.removeItem("responseTime");
-        },
-        clearStorageField: function (string) {
-          window.localStorage.removeItem(string);
-        }
-      };
+        return {
+            saveEmail: function(email) {
+                window.localStorage.setItem("email", AES.encrypt(email, passphrase));
+            },
+            saveAPIKey: function(APIKey) {
+                window.localStorage.setItem("APIKey", AES.encrypt(APIKey, passphrase));
+            },
+            saveResponseTime: function(responseTime) {
+                window.localStorage.setItem("responseTime", AES.encrypt(responseTime, passphrase));
+            },
+            saveServers: function(servers) {
+                window.localStorage.setItem("servers", AES.encrypt(JSON.stringify(servers), passphrase));
+            },
+            saveTasks: function(tasks) {
+                window.localStorage.setItem("tasks", AES.encrypt(JSON.stringify(tasks), passphrase));
+            },
+            saveTemplates: function(templates) {
+                window.localStorage.setItem("templates", AES.encrypt(JSON.stringify(templates), passphrase));
+            },
+            getEmail: function() {
+                if (window.localStorage.getItem("email")) {
+                    return AES.decrypt(window.localStorage.getItem("email"), passphrase);
+                } else {
+                    return "";
+                }
+            },
+            getAPIKey: function() {
+                if (window.localStorage.getItem("APIKey")) {
+                    return AES.decrypt(window.localStorage.getItem("APIKey"), passphrase);
+                } else {
+                    return "";
+                }
+            },
+            getResponseTime: function() {
+                if (window.localStorage.getItem("responseTime")) {
+                    return AES.decrypt(window.localStorage.getItem("responseTime"), passphrase);
+                } else {
+                    return "";
+                }
+            },
+            getServers: function() {
+                if (window.localStorage.getItem("servers")) {
+                    return isJson(AES.decrypt(window.localStorage.getItem("servers"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("servers"), passphrase)) : "";
+                } else {
+                    return [];
+                }
+            },
+            getTasks: function() {
+                if (window.localStorage.getItem("tasks")) {
+                    return isJson(AES.decrypt(window.localStorage.getItem("tasks"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("tasks"), passphrase)) : "";
+                } else {
+                    return [];
+                }
+            },
+            getTemplates: function() {
+                if (window.localStorage.getItem("templates")) {
+                    return isJson(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) : "";
+                } else {
+                    return [];
+                }
+            },
+            clearStorage: function() {
+                window.localStorage.removeItem("email");
+                window.localStorage.removeItem("APIKey");
+                window.localStorage.removeItem("responseTime");
+            },
+            clearStorageField: function (string) {
+                window.localStorage.removeItem(string);
+            }
+        };
     })
 
     .factory('AES', function() {
-      var iterationCount = 1000;
-      var keySize = 128;
-      var iv = "6edmJL==2c3#2@t6HMeWNLu{NY6z4U";
-      var salt = "v?BBKmLuPcxEaETj=Ujx3/Tm6{8uY9zwXm2GfsGdHT6WHtEH]84k+8n26kj9}EWX[AFQLi]U63J)mPme";
+        var iterationCount = 1000;
+        var keySize = 128;
+        var iv = "6edmJL==2c3#2@t6HMeWNLu{NY6z4U";
+        var salt = "v?BBKmLuPcxEaETj=Ujx3/Tm6{8uY9zwXm2GfsGdHT6WHtEH]84k+8n26kj9}EWX[AFQLi]U63J)mPme";
 
-      var aesUtil = new AesUtil(keySize, iterationCount);
+        var aesUtil = new AesUtil(keySize, iterationCount);
 
-      return {
-        encrypt: function(text, passphrase) {
-          return aesUtil.encrypt(salt, iv, passphrase, text);
-        },
-        decrypt: function(text, passphrase) {
-          return aesUtil.decrypt(salt, iv, passphrase, text);
-        }
-      };
+        return {
+            encrypt: function(text, passphrase) {
+                return aesUtil.encrypt(salt, iv, passphrase, text);
+            },
+            decrypt: function(text, passphrase) {
+                return aesUtil.decrypt(salt, iv, passphrase, text);
+            }
+        };
     });
