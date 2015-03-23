@@ -1,16 +1,28 @@
 /* Empty. Add your own CSS if you like */
-[ac-chart] {
+
+.pieChart {
+    height: 100px;
+    width: 100px;
     float:left;
-    width: 48%;
-    height: 400px;
-    margin: 0 1%;
 }
 
-#chart1 {
-    height: 400px;
-    width: 800px;
+.statusDot {
+    width: 12px;
+    height: 12px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    float:left;
+    margin-right: 5px;
+    margin-top: 5px
 }
-#chart2 {
-    height: 400px;
-    width: 800px;
+
+.statusDot.ok{
+    background: limegreen;
+}
+.statusDot.warn{
+    background: orange;
+}
+.statusDot.error{
+    background: orangered;
 }

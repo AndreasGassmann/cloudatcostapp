@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['angularCharts', 'angularMoment'])
+angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
     .controller('DashCtrl', function($scope, dataRequestService, dataStorage, Servers, Tasks, Templates) {
         $scope.status = false;
@@ -7,38 +7,36 @@ angular.module('starter.controllers', ['angularCharts', 'angularMoment'])
         $scope.templates = Templates.data;
         $scope.status = dataRequestService.status;
 
+        $scope.chartData = [];
+
+        $scope.getChartData = function(type, serverId) {
+            if (!$scope.chartData[serverId]) {
+                var server = Servers.get(serverId);
+                $scope.chartData[serverId] = {};
+                console.log(server);
+                $scope.chartData[serverId].cpu = [
+                    {label: "CPU", value: Math.round((server.cpuusage/(server.cpu*100))*100), suffix: "%", color: "steelblue"}
+                ];
+                $scope.chartData[serverId].ram = [
+                    {label: "RAM", value: Math.round((server.ramusage/server.ram)*100), suffix: "%", color: "goldenrod"}
+                ];
+                $scope.chartData[serverId].hd = [
+                    {label: "HD", value: Math.round((server.hdusage/server.storage)*100), suffix: "%", color: "forestgreen"}
+                ];
+            }
+            return type === 'CPU' ?
+                $scope.chartData[serverId].cpu :
+                type === 'RAM' ?
+                    $scope.chartData[serverId].ram :
+                    $scope.chartData[serverId].hd;
+        };
+
+        $scope.chartOptions = {thickness: 10, mode: "gauge", total: 100};
+
         $scope.refresh = function() {
             dataRequestService.getData(function() {
                 $scope.$broadcast('scroll.refreshComplete');
             });
-        };
-
-
-        $scope.data = {
-            data: [{
-                x: "Used",
-                //y: [$scope.servers.response.data[0].ramusage],
-                y: [100],
-                tooltip: "test"
-            }, {
-                x: "Free",
-                //y: [$scope.servers.response.data[0].ram - $scope.servers.response.data[0].ramusage],
-                y: [100],
-                tooltip: "test"
-            }]
-        };
-
-        $scope.chartType = 'pie';
-
-        $scope.config = {
-            labels: true,
-            tooltips: true,
-            title: "Memory",
-            legend: {
-                display: true,
-                position: 'left'
-            },
-            innerRadius: 0
         };
 
     })
