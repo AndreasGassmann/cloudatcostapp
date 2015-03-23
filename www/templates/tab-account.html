@@ -17,14 +17,14 @@
             <div class="card">
                 <div class="item item-divider">Instructions</div>
                 <div class="item item-text-wrap">
-                    Enter your CloudAtCost email and your API-Key above. The API-Key has to be generated in your
-                    cloudatcost.com Admin Panel. You will also need to set your API Access IP. Only connections from
-                    this IP will work (you may add more than one IP, separate them with a comma).
+                    1. Log in to your CloudAtCost Panel<br />
+                    2. Click on Settings on the top right<br />
+                    3. Generate an API Key<br />
+                    4. Enter your Email and API Key above<br />
+                    5. Add your devices current IP to the "API Access IP" Field on the CloudAtCost panel.
+                       If you don't know your IP, you can find it out by clicking on the button below<br />
                 </div>
             </div>
-            <button ng-click="deleteData()" class="button button-block button-positive">
-                Delete Account Info and Data
-            </button>
             <button ng-click="getIP()" class="button button-block button-positive">
                 Get current IP
             </button>
@@ -33,14 +33,9 @@
                     {{currentIP}}
                 </div>
             </div>
-            <a class="item" href="#"
-               onclick="window.open('https://twitter.com/cloudatcost', '_blank', 'location=yes'); return false;">
-                CloudAtCost Twitter
-            </a>
-            <a class="item" href="#"
-               onclick="window.open('https://twitter.com/cloudatcostapp', '_blank', 'location=yes'); return false;">
-                CloudAtCostApp Twitter
-            </a>
+            <button ng-click="deleteData()" class="button button-block button-positive">
+                Delete Account Info and Data
+            </button>
         </ion-list>
     </ion-content>
 </ion-view>

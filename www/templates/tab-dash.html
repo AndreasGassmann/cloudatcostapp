@@ -5,15 +5,20 @@
                 on-refresh="refresh()">
         </ion-refresher>
 
-        <ion-list>
-            <div ng-show="status.responseTime" class="list card">
+        <ion-list class="ng-cloak">
+            <div ng-show="status.responseTime" class="list">
                 <div class="item item-text-wrap">
                     Last update: <span am-time-ago="status.responseTime"></span>
                 </div>
             </div>
-            <div ng-show="status.message" class="list card">
+            <div ng-show="status.message" class="list">
                 <div class="item item-text-wrap">
                     {{status.message}}
+                </div>
+            </div>
+            <div ng-hide="servers.response.status == 'ok'" class="list">
+                <div class="item item-text-wrap">
+                    There is nothing here yet. Make sure you entered your Email and API-Key in the settings and come here again.
                 </div>
             </div>
             <div ng-show="servers.response.status == 'ok'" class="list card"
@@ -34,7 +39,21 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="tasks.response.status == 'ok'" class="list card">
+
+            <div class="item item-divider">
+                Social Media
+            </div>
+            <a class="item" href="#"
+               onclick="window.open('https://twitter.com/cloudatcost', '_blank', 'location=yes'); return false;">
+                CloudAtCost Twitter
+            </a>
+            <a class="item" href="#"
+               onclick="window.open('https://twitter.com/cloudatcostapp', '_blank', 'location=yes'); return false;">
+                CloudAtCostApp Twitter
+            </a>
+            <br />
+
+            <span ng-show="tasks.response.status == 'ok'" class="list">
                 <div class="item item-divider">Recent Tasks</div>
                 <p ng-hide="tasks.response.data.length > 0">No Tasks</p>
 
@@ -44,14 +63,14 @@
                             am-time-ago="task.finishtime*1000"></span></span>
                     </div>
                 </div>
-            </div>
-            <div ng-show="templates.response.status == 'ok'" class="list card">
+            </span>
+            <span ng-show="templates.response.status == 'ok'" class="list">
                 <div class="item item-divider">Available Templates</div>
                 <p ng-hide="templates.response.data.length > 0">No Templates</p>
                 <ul ng-if="templates.response.data.length > 0" class="list">
                     <li ng-repeat="template in templates.response.data" class="item">{{template.detail}}</li>
                 </ul>
-            </div>
+            </span>
         </ion-list>
     </ion-content>
 </ion-view>

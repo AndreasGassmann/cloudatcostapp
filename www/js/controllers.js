@@ -90,9 +90,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             confirmPopup.then(function(res) {
                 if(res) {
                     dataRequestService.powerOperation('poweron', serverId, function(data){
-                        alert(data);
-                        console.log(data);
-
+                        alert("Your server will now power on");
                     });
                 }
             });
@@ -105,10 +103,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             confirmPopup.then(function(res) {
                 if(res) {
                     dataRequestService.powerOperation('poweroff', serverId, function(data){
-                        alert(data.action);
-                        alert(data.result);
-                        console.log(data);
-
+                        alert("Your server will now power off");
                     });
                 }
             });
@@ -121,9 +116,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             confirmPopup.then(function(res) {
                 if(res) {
                     dataRequestService.powerOperation('reset', serverId, function(data){
-                        alert(data.action);
-                        alert(data.result);
-                        console.log(data);
+                        alert("Your server will now restart");
                     });
                 }
             });

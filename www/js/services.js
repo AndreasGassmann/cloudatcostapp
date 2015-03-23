@@ -68,11 +68,13 @@ angular.module('starter.services', [])
                 method: 'POST',
                 data: "key="+APIKey+"&login="+email+"&sid="+serverId
             }).success(function(data, status, headers, config){
-                alert(data.console);
                 callback(data);
             }).error(function(data, status, headers, config){
-                alert(data.console);
-                callback(data);
+                if (data.console) {
+                    callback(data);
+                } else {
+                    alert("There was an error, please try again.");
+                }
             });
         };
         var POSTpowerOperation = function(email, APIKey, serverId, action, callback) {
@@ -84,7 +86,15 @@ angular.module('starter.services', [])
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
-                callback(data);
+                if (data.result == "successful") {
+                    callback(data);
+                } else {
+                    if (data.error_description) {
+                        alert("There was an error: " + data.error_description);
+                    } else {
+                        alert("There was an error, please try again.");
+                    }
+                }
             });
         };
         var getIp = function(callback) {
@@ -165,6 +175,10 @@ angular.module('starter.services', [])
                 var email = dataStorage.getEmail();
                 var APIKey = dataStorage.getAPIKey();
                 POSTpowerOperation(email, APIKey, serverId, action, callback);
+            },
+            clear: function() {
+                responseStatus.responseTime = "";
+                responseStatus.message = "";
             }
         };
     })
