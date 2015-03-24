@@ -90,7 +90,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             confirmPopup.then(function(res) {
                 if(res) {
                     dataRequestService.powerOperation('poweron', serverId, function(data){
-                        alert("Your server will now power on");
+                        $ionicPopup.alert({
+                            title: 'Power On',
+                            template: 'Your server will now power on'
+                        });
                     });
                 }
             });
@@ -103,7 +106,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             confirmPopup.then(function(res) {
                 if(res) {
                     dataRequestService.powerOperation('poweroff', serverId, function(data){
-                        alert("Your server will now power off");
+                        $ionicPopup.alert({
+                            title: 'Power Off',
+                            template: 'Your server will now power off'
+                        });
                     });
                 }
             });
@@ -116,7 +122,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             confirmPopup.then(function(res) {
                 if(res) {
                     dataRequestService.powerOperation('reset', serverId, function(data){
-                        alert("Your server will now restart");
+                        $ionicPopup.alert({
+                            title: 'Restart',
+                            template: 'Your server will now restart'
+                        });
                     });
                 }
             });
@@ -141,6 +150,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             dataStorage.saveEmail($scope.settings.email);
             dataStorage.saveAPIKey($scope.settings.APIKey);
             dataRequestService.getData(function() {});
+            $ionicPopup.alert({
+                title: 'Saved!',
+                template: 'Your credentials have been saved. Check to Dashboard to see if it worked.'
+            });
         };
         $scope.deleteData = function() {
             var confirmPopup = $ionicPopup.confirm({
@@ -156,6 +169,11 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                     Tasks.clear();
                     Templates.clear();
                     localStorage.clear();
+                    $ionicPopup.alert({
+                        title: 'Success',
+                        template: 'Your account has been deleted from this device'
+                    });
+
                 }
             });
         };

@@ -54,7 +54,7 @@ angular.module('starter.services', [])
         };
     })
 
-    .factory('dataRequestService', function($http, dataStorage, Servers, Tasks, Templates) {
+    .factory('dataRequestService', function($http, $ionicPopup, dataStorage, Servers, Tasks, Templates) {
         delete $http.defaults.headers.common['X-Requested-With'];
 
         var responseStatus = {};
@@ -73,7 +73,10 @@ angular.module('starter.services', [])
                 if (data.console) {
                     callback(data);
                 } else {
-                    alert("There was an error, please try again.");
+                    $ionicPopup.alert({
+                        title: 'Oh no!',
+                        template: 'There was an error, please try again.'
+                    });
                 }
             });
         };
@@ -90,9 +93,15 @@ angular.module('starter.services', [])
                     callback(data);
                 } else {
                     if (data.error_description) {
-                        alert("There was an error: " + data.error_description);
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
                     } else {
-                        alert("There was an error, please try again.");
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
                     }
                 }
             });
