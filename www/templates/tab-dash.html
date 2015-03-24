@@ -1,22 +1,22 @@
 <ion-view view-title="Dashboard">
-    <ion-content class="padding">
+    <ion-content>
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="refresh()">
         </ion-refresher>
 
         <ion-list class="ng-cloak">
-            <div ng-show="status.responseTime" class="list">
+            <div ng-show="status.responseTime" class="list padding-horizontal padding-top">
                 <div class="item item-text-wrap">
                     Last update: <span am-time-ago="status.responseTime"></span>
                 </div>
             </div>
-            <div ng-show="status.message" class="list">
+            <div ng-show="status.message" class="list padding-horizontal">
                 <div class="item item-text-wrap">
                     {{status.message}}
                 </div>
             </div>
-            <div ng-hide="servers.response.status == 'ok'" class="list">
+            <div ng-hide="servers.response.status == 'ok'" class="list padding-horizontal">
                 <div class="item item-text-wrap">
                     There is nothing here yet. Make sure you entered your Email and API-Key in the settings and come here again.
                 </div>
@@ -51,7 +51,6 @@
                onclick="window.open('https://twitter.com/cloudatcostapp', '_blank', 'location=yes'); return false;">
                 CloudAtCostApp Twitter
             </a>
-            <br />
 
             <span ng-show="tasks.response.status == 'ok'" class="list">
                 <div class="item item-divider">Recent Tasks</div>
