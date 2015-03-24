@@ -54,6 +54,24 @@ angular.module('starter.services', [])
         };
     })
 
+    .factory('detailServer', function(Servers, Tasks) {
+        var server = {};
+        server.server = [];
+        server.tasks = [];
+        return {
+            data: server,
+            get: function(serverId) {
+                server.server = Servers.get(serverId);
+                server.tasks = Tasks.get(serverId);
+                return this.data;
+            },
+            clear: function() {
+                server.server = [];
+                server.tasks = [];
+            }
+        };
+    })
+
     .factory('dataRequestService', function($http, $ionicPopup, dataStorage, Servers, Tasks, Templates) {
         delete $http.defaults.headers.common['X-Requested-With'];
 

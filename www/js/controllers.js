@@ -78,9 +78,8 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicPopup, dataRequestService, Servers, Tasks) {
-        $scope.server = Servers.get($stateParams.serverId);
-        $scope.serverTasks = Tasks.get($stateParams.serverId);
+    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicPopup, dataRequestService, detailServer) {
+        $scope.server = detailServer.get($stateParams.serverId);
 
         $scope.ServerPowerOn = function(serverId) {
             var confirmPopup = $ionicPopup.confirm({
@@ -137,7 +136,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('AccountCtrl', function($scope, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+    .controller('AccountCtrl', function($scope, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates, detailServer) {
         $scope.currentIP = "";
 
         $scope.settings = {
@@ -164,11 +163,14 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 if(res) {
                     $scope.settings.email = "";
                     $scope.settings.APIKey = "";
+                    dataRequestService.clear();
                     dataStorage.clearStorage();
                     Servers.clear();
                     Tasks.clear();
                     Templates.clear();
+                    detailServer.clear();
                     localStorage.clear();
+
                     $ionicPopup.alert({
                         title: 'Success',
                         template: 'Your account has been deleted from this device'
