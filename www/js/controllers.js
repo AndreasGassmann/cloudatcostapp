@@ -136,7 +136,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('AccountCtrl', function($scope, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates, detailServer) {
+    .controller('AccountCtrl', function($scope, $state, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates, detailServer) {
         $scope.currentIP = "";
 
         $scope.settings = {
@@ -149,10 +149,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             dataStorage.saveEmail($scope.settings.email);
             dataStorage.saveAPIKey($scope.settings.APIKey);
             dataRequestService.getData(function() {});
-            $ionicPopup.alert({
-                title: 'Saved!',
-                template: 'Your credentials have been saved. Check to Dashboard to see if it worked.'
-            });
+            $state.transitionTo("tab.dash");
         };
         $scope.deleteData = function() {
             var confirmPopup = $ionicPopup.confirm({
@@ -163,6 +160,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 if(res) {
                     $scope.settings.email = "";
                     $scope.settings.APIKey = "";
+                    $scope.currentIP = "";
                     dataRequestService.clear();
                     dataStorage.clearStorage();
                     Servers.clear();
