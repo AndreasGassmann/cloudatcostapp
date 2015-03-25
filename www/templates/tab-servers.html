@@ -9,13 +9,9 @@
             <a class="item item-thumbnail-left" ng-repeat="server in servers.response.data"
                href="#/tab/servers/{{server.id}}">
                 <img ng-src="{{getTemplateImage(server.packageid)}}">
-
                 <h2>{{server.lable}} ({{server.id}})</h2>
-
                 <p>{{server.status}}</p>
-
                 <p>{{server.template}}</p>
-
                 <p>{{server.ip}}</p>
             </a>
         </ion-list>

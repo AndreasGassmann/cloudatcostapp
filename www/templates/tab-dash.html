@@ -11,12 +11,12 @@
                     Last update: <span am-time-ago="status.responseTime"></span>
                 </div>
             </div>
-            <div ng-show="status.message" class="list padding-horizontal">
+            <div ng-show="status.message" class="list padding-horizontal padding-top">
                 <div class="item item-text-wrap">
                     {{status.message}}
                 </div>
             </div>
-            <div ng-hide="servers.response.status == 'ok'" class="list padding-horizontal padding-top">
+            <div ng-hide="servers.response.status == 'ok' || status.message" class="list padding-horizontal padding-top">
                 <div class="item item-text-wrap">
                     There is nothing here yet. Make sure you entered your Email and API-Key in the settings and come here again.
                 </div>

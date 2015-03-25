@@ -174,6 +174,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                         template: 'Your account has been deleted from this device'
                     });
 
+                    window.location.reload(); // Reload entire app to reset views
                 }
             });
         };
