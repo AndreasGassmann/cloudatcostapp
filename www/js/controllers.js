@@ -13,7 +13,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             if (!$scope.chartData[serverId]) {
                 var server = Servers.get(serverId);
                 $scope.chartData[serverId] = {};
-                console.log(server);
                 $scope.chartData[serverId].cpu = [
                     {label: "CPU", value: Math.round((server.cpuusage/(server.cpu*100))*100), suffix: "%", color: "steelblue"}
                 ];

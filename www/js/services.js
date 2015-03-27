@@ -135,14 +135,229 @@ angular.module('starter.services', [])
             });
         };
         var startRequest = function(list, APIKey, email, callback) {
-            $http({
-                method: 'GET',
-                url: 'https://panel.cloudatcost.com/api/v1/list'+list+'.php?key='+APIKey+'&login='+email
-            }).success(function(data, status, headers, config){
-                callback(status, data);
-            }).error(function(data, status, headers, config){
-                callback(status, data);
-            });
+            if (email === 'email@example.com' && APIKey === '123456789') {
+                if (list == 'servers') {
+                    callback(200,
+                        {
+                            "status": "ok",
+                            "time": 1427411655,
+                            "api": "v1",
+                            "action": "listservers",
+                            "data": [
+                                {
+                                    "sid": "524132412",
+                                    "id": "524132412",
+                                    "packageid": "16",
+                                    "servername": "c2223141-42116",
+                                    "lable": "Developer 3",
+                                    "vmname": "c91132-453264-72341234-223122",
+                                    "ip": "132.161.218.112",
+                                    "netmask": "255.255.255.0",
+                                    "gateway": "132.161.218.1",
+                                    "portgroup": "Cloud-ip-32",
+                                    "hostname": "c2223141-42116.cloudatcost.com",
+                                    "rootpass": "F3RsG53Df",
+                                    "vncport": "41197",
+                                    "vncpass": "WfsGBRuJ",
+                                    "servertype": "Custom",
+                                    "template": "Ubuntu-14.04.1-LTS-64bit",
+                                    "cpu": "4",
+                                    "cpuusage": "242",
+                                    "ram": "2048",
+                                    "ramusage": "701.521",
+                                    "storage": "40",
+                                    "hdusage": "31.45323234",
+                                    "sdate": "01\/16\/2015",
+                                    "status": "Powered On",
+                                    "panel_note": null,
+                                    "mode": "Normal",
+                                    "uid": "642346234"
+                                },
+                                {
+                                    "sid": "423142525",
+                                    "id": "423142525",
+                                    "packageid": "25",
+                                    "servername": "c2425532-33214",
+                                    "lable": "Big Dog 3",
+                                    "vmname": "c90000-783788-441529187-25358",
+                                    "ip": "93.67.213.36",
+                                    "netmask": "255.255.255.0",
+                                    "gateway": "93.67.213.1",
+                                    "portgroup": "Cloud-ip-23",
+                                    "hostname": "c2425532-33214.cloudatcost.com",
+                                    "rootpass": "jgkasFGJ8",
+                                    "vncport": "55211",
+                                    "vncpass": "BDSj8Ji9SJ",
+                                    "servertype": "Custom",
+                                    "template": "Windows 2012 R2 64bit (BigDogs Only)",
+                                    "cpu": "8",
+                                    "cpuusage": "161",
+                                    "ram": "8192",
+                                    "ramusage": "2642.42",
+                                    "storage": "80",
+                                    "hdusage": "77.4455648765",
+                                    "sdate": "12\/28\/2014",
+                                    "status": "Powered On",
+                                    "panel_note": null,
+                                    "mode": "Normal",
+                                    "uid": "234627342"
+                                },
+                                {
+                                    "sid": "421223114",
+                                    "id": "421223114",
+                                    "packageid": "28",
+                                    "servername": "c3213142-32142",
+                                    "lable": "Minecraft",
+                                    "vmname": "c436234-152525-574325453-12314",
+                                    "ip": "112.141.11.122",
+                                    "netmask": "255.255.255.0",
+                                    "gateway": "112.141.11..1",
+                                    "portgroup": "Cloud-ip-45",
+                                    "hostname": "c3213142-32142.cloudatcost.com",
+                                    "rootpass": "lkd85a6g4",
+                                    "vncport": "24654",
+                                    "vncpass": "dag4w98csa",
+                                    "servertype": "Custom",
+                                    "template": "Minecraft-CentOS-7-64bit",
+                                    "cpu": "8",
+                                    "cpuusage": "782",
+                                    "ram": "8192",
+                                    "ramusage": "6789.546",
+                                    "storage": "80",
+                                    "hdusage": "7.459795467",
+                                    "sdate": "01\/22\/2015",
+                                    "status": "Powered On",
+                                    "panel_note": null,
+                                    "mode": "Normal",
+                                    "uid": "732723463"
+                                }
+                            ]
+                        }
+                    );
+                }
+
+                if (list == 'tasks') {
+                    callback(200,
+                        {
+                            "status": "ok",
+                            "time": 1427411655,
+                            "api": "v1",
+                            "cid": "562644634",
+                            "action": "listtasks",
+                            "data": [
+                                {
+                                    "cid": "562644634",
+                                    "idf": "865359735573",
+                                    "serverid": "524132412",
+                                    "action": "poweron",
+                                    "status": "completed",
+                                    "starttime": "1426354391",
+                                    "finishtime": "1426354412"
+                                },
+                                {
+                                    "cid": "562644634",
+                                    "idf": "357358694563",
+                                    "serverid": "524132412",
+                                    "action": "poweroff",
+                                    "status": "completed",
+                                    "starttime": "1426354483",
+                                    "finishtime": "1426354505"
+                                },
+                                {
+                                    "cid": "562644634",
+                                    "idf": "865359793563",
+                                    "serverid": "421223114",
+                                    "action": "reset",
+                                    "status": "completed",
+                                    "starttime": "1427411655",
+                                    "finishtime": "1427411955"
+                                }
+                            ]
+                        }
+                    );
+                }
+                if (list == 'templates') {
+                    callback(200,
+                        {
+                            "status": "ok",
+                            "time": 1427411655,
+                            "api": "v1",
+                            "action": "listtemplates",
+                            "data": [
+                                {
+                                    "id": "26",
+                                    "detail": "CentOS-7-64bit"
+                                },
+                                {
+                                    "id": "27",
+                                    "detail": "Ubuntu-14.04.1-LTS-64bit"
+                                },
+                                {
+                                    "id": "15",
+                                    "detail": "CentOS 6.5 64bit (LAMP)"
+                                },
+                                {
+                                    "id": "21",
+                                    "detail": "Ubuntu 12.10 64bit"
+                                },
+                                {
+                                    "id": "23",
+                                    "detail": "Ubuntu 12.04.3 LTS 64bit"
+                                },
+                                {
+                                    "id": "24",
+                                    "detail": "Windows 2008 R2 64bit (BigDogs Only)"
+                                },
+                                {
+                                    "id": "25",
+                                    "detail": "Windows 2012 R2 64bit (BigDogs Only)"
+                                },
+                                {
+                                    "id": "14",
+                                    "detail": "CentOS 6.5 64bit (cPanel-WHM)"
+                                },
+                                {
+                                    "id": "13",
+                                    "detail": "CentOS 6.5 64bit"
+                                },
+                                {
+                                    "id": "10",
+                                    "detail": "CentOS 6.5 32bit"
+                                },
+                                {
+                                    "id": "3",
+                                    "detail": "Debian 7.1 64bit"
+                                },
+                                {
+                                    "id": "9",
+                                    "detail": "Windows7 64bit (BigDogs Only)"
+                                },
+                                {
+                                    "id": "2",
+                                    "detail": "Ubuntu-13.10-64bit"
+                                },
+                                {
+                                    "id": "1",
+                                    "detail": "CentOS 6.4 64bit"
+                                },
+                                {
+                                    "id": "28",
+                                    "detail": "Minecraft-CentOS-7-64bit"
+                                }
+                            ]
+                        }
+                    );
+                }
+            } else {
+                $http({
+                    method: 'GET',
+                    url: 'https://panel.cloudatcost.com/api/v1/list'+list+'.php?key='+APIKey+'&login='+email
+                }).success(function(data, status, headers, config){
+                    callback(status, data);
+                }).error(function(data, status, headers, config){
+                    callback(status, data);
+                });
+            }
         };
         return {
             status: responseStatus,
@@ -151,7 +366,7 @@ angular.module('starter.services', [])
                 var APIKey = dataStorage.getAPIKey();
                 if (email && APIKey && email.length > 0 && APIKey.length > 0) {
 
-                    var errorMessage = "There was an error. Make sure your credentials are correct and you set the correct IP in the CloudAtCost Panel";
+                    var errorMessage = "There was an error. Make sure your credentials are correct and you set the correct IP in the CloudAtCost Panel.";
                     startRequest("servers", APIKey, email, function (status, dataResponse) {
                         if (status == 200) {
                             responseStatus.message = "";
