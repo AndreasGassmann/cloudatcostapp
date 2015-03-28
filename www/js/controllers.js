@@ -135,7 +135,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('AccountCtrl', function($scope, $state, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates, detailServer) {
+    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates, detailServer) {
         $scope.currentIP = "";
 
         $scope.settings = {
@@ -180,6 +180,23 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.getIP = function() {
             dataRequestService.getCurrentIP(function(data) {
                 $scope.currentIP = data;
+            });
+        };
+
+        $scope.scanBarcode = function() {
+            $cordovaBarcodeScanner.scan().then(function(imageData) {
+                var text = imageData.text.split(',');
+                $scope.settings.email = text[1];
+                $scope.settings.APIKey = text[0];
+                $scope.saveData();
+                //console.log("Barcode Format -> " + imageData.format);
+                //console.log("Cancelled -> " + imageData.cancelled);
+            }, function(error) {
+                $ionicPopup.alert({
+                    title: 'Error',
+                    template: 'There was an error. Please try again.'
+                });
+                //console.log("An error happened -> " + error);
             });
         };
 
