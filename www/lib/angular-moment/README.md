@@ -15,7 +15,7 @@ You can choose your preferred method of installation:
 * Through bower: `bower install angular-moment --save`
 * Through npm: `npm install angular-moment --save`
 * Through NuGet: `Install-Package angular-moment`
-* From a CDN: [jsDelivr](https://cdn.jsdelivr.net/angular.moment/0.9.0/angular-moment.min.js) or [CDNJS](https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js)
+* From a CDN: [jsDelivr](https://cdn.jsdelivr.net/angular.moment/0.9.2/angular-moment.min.js) or [CDNJS](https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.2/angular-moment.min.js)
 * Download from github: [angular-moment.min.js](https://raw.github.com/urish/angular-moment/master/angular-moment.min.js)
 
 Usage
@@ -49,7 +49,7 @@ myapp.run(function(amMoment) {
 
 ### Configuration
 
-Parameter `preprocess`(e.g: `unix`, `utc`) would pre-execute before. 
+Parameter `preprocess`(e.g: `unix`, `utc`) would pre-execute before.
 
 ```js
 angular.module('myapp').constant('angularMomentConfig', {
@@ -67,7 +67,7 @@ Use am-time-ago directive to format your relative timestamps. For example:
 ```
 
 angular-moment will dynamically update the span to indicate how much time
-passed since the message was created. So, if you controller contains the following
+passed since the message was created. So, if your controller contains the following
 code:
 ```js
 $scope.message = {
@@ -104,6 +104,20 @@ This snippet will format the given time as e.g. "Today 2:30 AM" or "Last Monday 
 
 For more information about Moment.JS calendar time format, see the
 [docs for the calendar() function](http://momentjs.com/docs/#/displaying/calendar-time/).
+
+### amDifference filter
+
+Get the difference between two dates in milliseconds.
+Parameters are date, units and usePrecision. Date defaults to current date. Example:
+
+```html
+<span>Scheduled {{message.createdAt | amDifference : null : 'days' }} days from now</span>
+```
+
+This snippet will return the number of days between the current date and the date filtered.
+
+For more information about Moment.JS difference function, see the
+[docs for the diff() function](http://momentjs.com/docs/#/displaying/difference/).
 
 ### Time zone support
 
@@ -144,5 +158,3 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-

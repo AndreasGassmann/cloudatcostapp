@@ -1,4 +1,4 @@
-/* angular-moment.js / v0.9.0 / (c) 2013, 2014, 2015 Uri Shaked / MIT Licence */
+/* angular-moment.js / v0.9.2 / (c) 2013, 2014, 2015 Uri Shaked / MIT Licence */
 
 'format global';
 /* global define */
@@ -293,17 +293,34 @@
 				 *
 				 * @description
 				 * Changes the locale for moment.js and updates all the am-time-ago directive instances
-				 * with the new locale. Also broadcasts a `amMoment:localeChanged` event on $rootScope.
+				 * with the new locale. Also broadcasts an `amMoment:localeChanged` event on $rootScope.
 				 *
 				 * @param {string} locale Locale code (e.g. en, es, ru, pt-br, etc.)
+				 * @param {object} customization object of locale strings to override
 				 */
-				this.changeLocale = function (locale) {
-					var result = moment.locale(locale);
+				this.changeLocale = function (locale, customization) {
+					var result = moment.locale(locale, customization);
 					if (angular.isDefined(locale)) {
 						$rootScope.$broadcast('amMoment:localeChanged');
 
 					}
 					return result;
+				};
+
+				/**
+				 * @ngdoc function
+				 * @name angularMoment.service.amMoment#changeTimezone
+				 * @methodOf angularMoment.service.amMoment
+				 *
+				 * @description
+				 * Changes the default timezone for amCalendar, amDateFormat and amTimeAgo. Also broadcasts an
+				 * `amMoment:timezoneChanged` event on $rootScope.
+				 *
+				 * @param {string} timezone Timezone name (e.g. UTC)
+				 */
+				this.changeTimezone = function (timezone) {
+					angularMomentConfig.timezone = timezone;
+					$rootScope.$broadcast('amMoment:timezoneChanged');
 				};
 
 				/**
@@ -392,6 +409,42 @@
 
 		/**
 		 * @ngdoc filter
+		 * @name angularMoment.filter:amDifference
+		 * @module angularMoment
+		 */
+			.filter('amDifference', ['moment', 'amMoment', 'angularMomentConfig', function (moment, amMoment, angularMomentConfig) {
+				function amDifferenceFilter(value, otherValue, unit, usePrecision, preprocessValue, preprocessOtherValue) {
+					if (typeof value === 'undefined' || value === null) {
+						return '';
+					}
+
+					value = amMoment.preprocessDate(value, preprocessValue);
+					var date = moment(value);
+					if (!date.isValid()) {
+						return '';
+					}
+
+					var date2;
+					if (typeof otherValue === 'undefined' || otherValue === null) {
+						date2 = moment();
+					} else {
+						otherValue = amMoment.preprocessDate(otherValue, preprocessOtherValue);
+						date2 = moment(otherValue);
+						if (!date2.isValid()) {
+							return '';
+						}
+					}
+
+					return amMoment.applyTimezone(date).diff(amMoment.applyTimezone(date2), unit, usePrecision);
+				}
+
+				amDifferenceFilter.$stateful = angularMomentConfig.statefulFilters;
+
+				return amDifferenceFilter;
+			}])
+
+		/**
+		 * @ngdoc filter
 		 * @name angularMoment.filter:amDateFormat
 		 * @module angularMoment
 		 * @function
@@ -464,11 +517,10 @@
 	}
 
 	if (typeof define === 'function' && define.amd) {
-		define('angular-moment', ['angular', 'moment'], angularMoment);
+		define(['angular', 'moment'], angularMoment);
 	} else if (typeof module !== 'undefined' && module && module.exports) {
 		angularMoment(angular, require('moment'));
 	} else {
 		angularMoment(angular, window.moment);
 	}
 })();
-
