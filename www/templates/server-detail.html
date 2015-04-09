@@ -4,7 +4,7 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{server.server.lable}}">
+<ion-view view-title="{{server.server.label}}">
     <ion-content has-bouncing="true" class="padding">
         <ion-list ng-show="server.server.id">
             <div class="item item-divider">
@@ -31,6 +31,12 @@
                 <a ng-click="ServerPowerOff(server.server.id)" class="button button-positive">Power off</a>
                 <a ng-click="ServerReset(server.server.id)" class="button button-positive">Restart</a>
             </div>
+            <button ng-click="renameServer(server.server.id, server.server.label)" class="button button-block button-positive">
+                Rename Server
+            </button>
+            <button ng-click="modifyDNS(server.server.id, server.server.hostname)" class="button button-block button-positive">
+                Modify reverse DNS
+            </button>
             <button ng-click="getConsole(server.server.id)" class="button button-block button-positive">
                 Open Console
             </button>

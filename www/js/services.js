@@ -91,10 +91,72 @@ angular.module('starter.services', [])
                 if (data.console) {
                     callback(data);
                 } else {
-                    $ionicPopup.alert({
-                        title: 'Oh no!',
-                        template: 'There was an error, please try again.'
-                    });
+                    if (data.error_description) {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
+                    }
+                }
+            });
+        };
+        var POSTrenameServer = function(email, APIKey, serverId, newServerName, callback) {
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+            console.log("renaming server:");
+            console.log('https://panel.cloudatcost.com/api/v1/renameserver.php: ' + "key="+APIKey+"&login="+email+"&sid="+serverId+"&name="+newServerName);
+            $http({
+                url: 'https://panel.cloudatcost.com/api/v1/renameserver.php',
+                method: 'POST',
+                data: "key="+APIKey+"&login="+email+"&sid="+serverId+"&name="+newServerName
+            }).success(function(data, status, headers, config){
+                callback(data);
+            }).error(function(data, status, headers, config){
+                if (data.result === "successful") {
+                    callback(data);
+                } else {
+                    if (data.error_description) {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
+                    }
+                }
+            });
+        };
+        var POSTmodifyDNS = function(email, APIKey, serverId, newHostname, callback) {
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+            console.log("https://panel.cloudatcost.com/api/v1/rdns.php: key="+APIKey+"&login="+email+"&sid="+serverId+"&hostname="+newHostname);
+            $http({
+                url: 'https://panel.cloudatcost.com/api/v1/rdns.php',
+                method: 'POST',
+                data: "key="+APIKey+"&login="+email+"&sid="+serverId+"&hostname="+newHostname
+            }).success(function(data, status, headers, config){
+                callback(data);
+            }).error(function(data, status, headers, config){
+                if (data.result === "successful") {
+                    callback(data);
+                } else {
+                    if (data.error_description) {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
+                    }
                 }
             });
         };
@@ -107,7 +169,7 @@ angular.module('starter.services', [])
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
-                if (data.result == "successful") {
+                if (data.result === "successful") {
                     callback(data);
                 } else {
                     if (data.error_description) {
@@ -149,6 +211,7 @@ angular.module('starter.services', [])
                                     "id": "524132412",
                                     "packageid": "16",
                                     "servername": "c2223141-42116",
+                                    "label": "Developer 3",
                                     "lable": "Developer 3",
                                     "vmname": "c91132-453264-72341234-223122",
                                     "ip": "132.161.218.112",
@@ -178,6 +241,7 @@ angular.module('starter.services', [])
                                     "id": "423142525",
                                     "packageid": "25",
                                     "servername": "c2425532-33214",
+                                    "label": "Big Dog 3",
                                     "lable": "Big Dog 3",
                                     "vmname": "c90000-783788-441529187-25358",
                                     "ip": "93.67.213.36",
@@ -207,6 +271,7 @@ angular.module('starter.services', [])
                                     "id": "421223114",
                                     "packageid": "28",
                                     "servername": "c3213142-32142",
+                                    "label": "Minecraft",
                                     "lable": "Minecraft",
                                     "vmname": "c436234-152525-574325453-12314",
                                     "ip": "112.141.11.122",
@@ -417,6 +482,16 @@ angular.module('starter.services', [])
                 var email = dataStorage.getEmail();
                 var APIKey = dataStorage.getAPIKey();
                 POSTpowerOperation(email, APIKey, serverId, action, callback);
+            },
+            renameServer: function(serverId, newServerName, callback) {
+                var email = dataStorage.getEmail();
+                var APIKey = dataStorage.getAPIKey();
+                POSTrenameServer(email, APIKey, serverId, newServerName, callback);
+            },
+            modifyDNS: function(serverId, newHostname, callback) {
+                var email = dataStorage.getEmail();
+                var APIKey = dataStorage.getAPIKey();
+                POSTmodifyDNS(email, APIKey, serverId, newHostname, callback);
             },
             clear: function() {
                 responseStatus.responseTime = "";

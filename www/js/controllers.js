@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
-    .controller('DashCtrl', function($scope, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+    .controller('DashCtrl', function($scope, $ionicHistory, dataRequestService, dataStorage, Servers, Tasks, Templates) {
         $scope.status = false;
         $scope.servers = Servers.data;
         $scope.tasks = Tasks.data;
@@ -34,6 +34,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
         $scope.refresh = function() {
             dataRequestService.getData(function() {
+                $ionicHistory.clearHistory();
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };
@@ -128,6 +129,69 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 }
             });
         };
+
+        $scope.renameServer = function(serverId, currentServerName) {
+            $scope.data = {};
+
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.newServername">',
+                title: 'Enter new server name',
+                subTitle: 'Your current server name is:<br />'+currentServerName,
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.data.newServername || $scope.data.newServername === currentServerName) {
+                                //don't allow the user to close unless he enters something new
+                                e.preventDefault();
+                            } else {
+                                dataRequestService.renameServer(serverId, $scope.data.newServername, function(data) {
+                                    $ionicPopup.alert({
+                                        title: 'Success!',
+                                        template: 'Your server name has been changed'
+                                    });
+                                });
+                            }
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.modifyDNS = function(serverId, currentHostname) {
+            $scope.data = {};
+
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.newHostname">',
+                title: 'Enter new hostname',
+                subTitle: 'Your current hostname is:<br />'+currentHostname,
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.data.newHostname || $scope.data.newHostname === currentHostname) {
+                                //don't allow the user to close unless he enters something new
+                                e.preventDefault();
+                            } else {
+                                dataRequestService.modifyDNS(serverId, $scope.data.newHostname, function(data) {
+                                    $ionicPopup.alert({
+                                        title: 'Success!',
+                                        template: 'Your reverse DNS has been changed'
+                                    });
+                                });
+                            }
+                        }
+                    }
+                ]
+            });
+        };
+
         $scope.getConsole = function(serverId) {
             dataRequestService.getConsole(serverId, function(data) {
                 window.open(data.console, '_system', 'location=yes');
