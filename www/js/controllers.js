@@ -78,8 +78,18 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicPopup, dataRequestService, detailServer) {
-        $scope.server = detailServer.get($stateParams.serverId);
+    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicPopup, dataRequestService, Servers, Tasks) {
+        $scope.server = {};
+        $scope.allServers = Servers.data;
+        $scope.allTasks = Tasks.data;
+        $scope.server.server = _.find($scope.allServers.response.data, function(server){ return server.id === $stateParams.serverId; });
+        $scope.server.tasks = _.sortBy(_.filter($scope.allTasks.response.data, function(task){ return task.serverid === $stateParams.serverId; }), 'finishtime');
+
+        // Update detail view when new data is available
+        $scope.$watch('allServers', function (newVal, oldVal) {
+            $scope.server.server = _.find($scope.allServers.response.data, function(server){ return server.id === $stateParams.serverId; });
+            $scope.server.tasks = _.sortBy(_.filter($scope.allTasks.response.data, function(task){ return task.serverid === $stateParams.serverId; }), 'finishtime');
+        }, true);
 
         $scope.ServerPowerOn = function(serverId) {
             var confirmPopup = $ionicPopup.confirm({
@@ -199,7 +209,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates, detailServer) {
+    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates) {
         $scope.currentIP = "";
 
         $scope.settings = {
@@ -229,7 +239,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                     Servers.clear();
                     Tasks.clear();
                     Templates.clear();
-                    detailServer.clear();
                     localStorage.clear();
 
                     $ionicPopup.alert({
@@ -245,6 +254,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             dataRequestService.getCurrentIP(function(data) {
                 $scope.currentIP = data;
             });
+        };
+
+        $scope.refreshApp = function() {
+            window.location.reload(); // Reload entire app to reset views
         };
 
         $scope.scanBarcode = function() {
