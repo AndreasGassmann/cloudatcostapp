@@ -29,13 +29,13 @@
                 </div>
                 <div class="item item-body">
                     <div class="pieChart">
-                        <pie-chart data="getChartData('CPU', server.id)" options="chartOptions"></pie-chart>
+                        <pie-chart data="server.chartData.cpu" options="chartOptions"></pie-chart>
                     </div>
                     <div class="pieChart">
-                        <pie-chart data="getChartData('RAM', server.id)" options="chartOptions"></pie-chart>
+                        <pie-chart data="server.chartData.ram" options="chartOptions"></pie-chart>
                     </div>
                     <div class="pieChart">
-                        <pie-chart data="getChartData('HD', server.id)" options="chartOptions"></pie-chart>
+                        <pie-chart data="server.chartData.hd" options="chartOptions"></pie-chart>
                     </div>
                 </div>
             </div>

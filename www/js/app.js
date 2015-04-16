@@ -67,6 +67,25 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
             }
           })
 
+          .state('tab.cloudpro', {
+              url: '/cloudpro',
+              views: {
+                  'tab-cloudpro': {
+                      templateUrl: 'templates/tab-cloudpro.html',
+                      controller: 'CloudproCtrl'
+                  }
+              }
+          })
+          .state('tab.cloudpro-detail', {
+              url: '/cloudpro/:serverId',
+              views: {
+                  'tab-cloudpro': {
+                      templateUrl: 'templates/cloudpro-detail.html',
+                      controller: 'CloudproDetailCtrl'
+                  }
+              }
+          })
+
           .state('tab.account', {
             url: '/account',
             views: {

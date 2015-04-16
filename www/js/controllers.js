@@ -6,30 +6,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.tasks = Tasks.data;
         $scope.templates = Templates.data;
         $scope.status = dataRequestService.status;
-
-        $scope.chartData = [];
-
-        $scope.getChartData = function(type, serverId) {
-            if (!$scope.chartData[serverId]) {
-                var server = Servers.get(serverId);
-                $scope.chartData[serverId] = {};
-                $scope.chartData[serverId].cpu = [
-                    {label: "CPU", value: Math.round((server.cpuusage/(server.cpu*100))*100), suffix: "%", color: "steelblue"}
-                ];
-                $scope.chartData[serverId].ram = [
-                    {label: "RAM", value: Math.round((server.ramusage/server.ram)*100), suffix: "%", color: "goldenrod"}
-                ];
-                $scope.chartData[serverId].hd = [
-                    {label: "HD", value: Math.round((server.hdusage/server.storage)*100), suffix: "%", color: "forestgreen"}
-                ];
-            }
-            return type === 'CPU' ?
-                $scope.chartData[serverId].cpu :
-                type === 'RAM' ?
-                    $scope.chartData[serverId].ram :
-                    $scope.chartData[serverId].hd;
-        };
-
         $scope.chartOptions = {thickness: 10, mode: "gauge", total: 100};
 
         $scope.refresh = function() {
@@ -209,6 +185,27 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 window.open(data.console, '_system', 'location=yes');
             });
         };
+
+        $scope.filterAttributes = function(server) {
+            var result = {};
+            _.each(server, function(value, key) {
+                if (key !== 'chartData') {
+                    result[key] = value;
+                }
+            });
+            return result;
+        }
+
+    })
+
+    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, dataRequestService) {
+        dataRequestService.requestCloudproResources(function (status, data) {
+            console.log(data);
+            console.log(status);
+        });
+    })
+    .controller('CloudproDetailCtrl', function($scope, $state, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+
     })
 
     .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates) {

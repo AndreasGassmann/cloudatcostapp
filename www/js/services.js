@@ -178,6 +178,41 @@ angular.module('starter.services', [])
                 callback("");
             });
         };
+
+        var requestCloudproResources = function(APIKey, email, callback) {
+            if (email === 'email@example.com' && APIKey === '123456789') {
+                callback(200, {
+                    "status": "ok",
+                    "time": 1429120346,
+                    "api": "v1",
+                    "action": "resources",
+                    "data": {
+                        "total": [
+                            {
+                                "cpu_total": "8",
+                                "ram_total": "8192",
+                                "storage_total": "120"
+                            }
+                        ],
+                        "used": {
+                            "cpu_used": "3",
+                            "ram_used": "3072",
+                            "storage_used": "90"
+                        }
+                    }
+                });
+            } else {
+                $http({
+                    method: 'GET',
+                    url: 'https://panel.cloudatcost.com/api/v1/cloudpro/resources.php?key='+APIKey+'&login='+email
+                }).success(function(data, status, headers, config){
+                    callback(status, data);
+                }).error(function(data, status, headers, config){
+                    callback(status, data);
+                });
+            }
+        };
+
         var startRequest = function(list, APIKey, email, callback) {
             if (email === 'email@example.com' && APIKey === '123456789') {
                 if (list == 'servers') {
@@ -330,66 +365,74 @@ angular.module('starter.services', [])
                             "time": 1427411655,
                             "api": "v1",
                             "action": "listtemplates",
-                            "data": [
+                            "data":[
                                 {
-                                    "id": "26",
-                                    "detail": "CentOS-7-64bit"
+                                    "id":"74",
+                                    "detail":"FreeBSD-10-1-64bit"
                                 },
                                 {
-                                    "id": "27",
-                                    "detail": "Ubuntu-14.04.1-LTS-64bit"
+                                    "id":"28",
+                                    "detail":"Minecraft-CentOS-7-64bit"
                                 },
                                 {
-                                    "id": "15",
-                                    "detail": "CentOS 6.5 64bit (LAMP)"
+                                    "id":"27",
+                                    "detail":"Ubuntu-14.04.1-LTS-64bit"
                                 },
                                 {
-                                    "id": "21",
-                                    "detail": "Ubuntu 12.10 64bit"
+                                    "id":"26",
+                                    "detail":"CentOS-7-64bit"
                                 },
                                 {
-                                    "id": "23",
-                                    "detail": "Ubuntu 12.04.3 LTS 64bit"
+                                    "id":"25",
+                                    "detail":"Windows 2012 R2 64bit (BigDogs Only)"
                                 },
                                 {
-                                    "id": "24",
-                                    "detail": "Windows 2008 R2 64bit (BigDogs Only)"
+                                    "id":"24",
+                                    "detail":"Windows 2008 R2 64bit (BigDogs Only)"
                                 },
                                 {
-                                    "id": "25",
-                                    "detail": "Windows 2012 R2 64bit (BigDogs Only)"
+                                    "id":"21",
+                                    "detail":"Ubuntu 12.10 64bit"
                                 },
                                 {
-                                    "id": "14",
-                                    "detail": "CentOS 6.5 64bit (cPanel-WHM)"
+                                    "id":"23",
+                                    "detail":"Ubuntu 12.04.3 LTS 64bit"
                                 },
                                 {
-                                    "id": "13",
-                                    "detail": "CentOS 6.5 64bit"
+                                    "id":"15",
+                                    "detail":"CentOS 6.5 64bit (LAMP)"
                                 },
                                 {
-                                    "id": "10",
-                                    "detail": "CentOS 6.5 32bit"
+                                    "id":"14",
+                                    "detail":"CentOS 6.5 64bit (cPanel-WHM)"
                                 },
                                 {
-                                    "id": "3",
-                                    "detail": "Debian 7.1 64bit"
+                                    "id":"10",
+                                    "detail":"CentOS 6.5 32bit"
                                 },
                                 {
-                                    "id": "9",
-                                    "detail": "Windows7 64bit (BigDogs Only)"
+                                    "id":"13",
+                                    "detail":"CentOS 6.5 64bit"
                                 },
                                 {
-                                    "id": "2",
-                                    "detail": "Ubuntu-13.10-64bit"
+                                    "id":"9",
+                                    "detail":"Windows7 64bit (BigDogs Only)"
                                 },
                                 {
-                                    "id": "1",
-                                    "detail": "CentOS 6.4 64bit"
+                                    "id":"3",
+                                    "detail":"Debian 7.1 64bit"
                                 },
                                 {
-                                    "id": "28",
-                                    "detail": "Minecraft-CentOS-7-64bit"
+                                    "id":"2",
+                                    "detail":"Ubuntu-13.10-64bit"
+                                },
+                                {
+                                    "id":"1",
+                                    "detail":"CentOS 6.4 64bit"
+                                },
+                                {
+                                    "id":"75",
+                                    "detail":"Docker Ubuntu-14.04.1-LTS"
                                 }
                             ]
                         }
@@ -417,6 +460,18 @@ angular.module('starter.services', [])
                     startRequest("servers", APIKey, email, function (status, dataResponse) {
                         if (status == 200) {
                             responseStatus.message = "";
+                            _.each(dataResponse.data, function(data) {
+                                data.chartData = {};
+                                data.chartData.cpu = [
+                                    {label: "CPU", value: Math.round((data.cpuusage/(data.cpu*100))*100), suffix: "%", color: "steelblue"}
+                                ];
+                                data.chartData.ram = [
+                                    {label: "RAM", value: Math.round((data.ramusage/data.ram)*100), suffix: "%", color: "goldenrod"}
+                                ];
+                                data.chartData.hd = [
+                                    {label: "HD", value: Math.round((data.hdusage/data.storage)*100), suffix: "%", color: "forestgreen"}
+                                ];
+                            });
                             Servers.update(dataResponse);
                             responseStatus.responseTime = (dataResponse.time * 1000);
                             dataStorage.saveResponseTime((dataResponse.time * 1000).toString());
@@ -459,6 +514,11 @@ angular.module('starter.services', [])
                 var email = dataStorage.getEmail();
                 var APIKey = dataStorage.getAPIKey();
                 POSTgetConsole(email, APIKey, serverId, callback);
+            },
+            requestCloudproResources: function(callback) {
+                var email = dataStorage.getEmail();
+                var APIKey = dataStorage.getAPIKey();
+                requestCloudproResources(APIKey, email, callback);
             },
             powerOperation: function(action, serverId, callback) {
                 var email = dataStorage.getEmail();
