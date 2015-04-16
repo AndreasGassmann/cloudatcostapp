@@ -38,7 +38,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };
-
     })
 
     .controller('ServerCtrl', function($scope, dataRequestService, Servers) {
@@ -51,6 +50,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.servers = Servers.data;
 
         $scope.template_images = [];
+        $scope.template_images[74] = 'freebsd';
         $scope.template_images[26] = 'centos';
         $scope.template_images[27] = 'ubuntu';
         $scope.template_images[15] = 'centos';
@@ -58,6 +58,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.template_images[23] = 'ubuntu';
         $scope.template_images[24] = 'windows-server-2008';
         $scope.template_images[25] = 'windows-server-2012';
+        $scope.template_images[15] = 'centos';
         $scope.template_images[14] = 'centos';
         $scope.template_images[13] = 'centos';
         $scope.template_images[10] = 'centos';
@@ -67,6 +68,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.template_images[1] = 'centos';
         $scope.template_images[28] = 'minecraft';
         $scope.template_images[16] = 'ubuntu';
+        $scope.template_images[75] = 'docker';
 
         $scope.getTemplateImage = function(id) {
             if ($scope.template_images[id]) {
