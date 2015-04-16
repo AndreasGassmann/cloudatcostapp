@@ -16,9 +16,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('ServerCtrl', function($scope, dataRequestService, Servers) {
+    .controller('ServerCtrl', function($scope, $ionicHistory, dataRequestService, Servers) {
         $scope.refresh = function() {
             dataRequestService.getData(function() {
+                $ionicHistory.clearCache();
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };
@@ -261,10 +262,13 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
         $scope.scanBarcode = function() {
             $cordovaBarcodeScanner.scan().then(function(imageData) {
-                var text = imageData.text.split(',');
-                $scope.settings.email = text[1];
-                $scope.settings.APIKey = text[0];
-                $scope.saveData();
+                if (imageData.text) {
+                    // todo: verify input data
+                    var text = imageData.text.split(',');
+                    $scope.settings.email = text[1];
+                    $scope.settings.APIKey = text[0];
+                    $scope.saveData();
+                }
                 //console.log("Barcode Format -> " + imageData.format);
                 //console.log("Cancelled -> " + imageData.cancelled);
             }, function(error) {
