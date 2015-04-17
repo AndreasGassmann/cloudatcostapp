@@ -463,13 +463,13 @@ angular.module('starter.services', [])
                             _.each(dataResponse.data, function(data) {
                                 data.chartData = {};
                                 data.chartData.cpu = [
-                                    {label: "CPU", value: Math.round((data.cpuusage/(data.cpu*100))*100), suffix: "%", color: "steelblue"}
+                                    {label: "CPU", value: Math.round((data.cpuusage/(data.cpu*100))*100), suffix: "%", color: "#4682B4", complementBrightness: 90}
                                 ];
                                 data.chartData.ram = [
-                                    {label: "RAM", value: Math.round((data.ramusage/data.ram)*100), suffix: "%", color: "goldenrod"}
+                                    {label: "RAM", value: Math.round((data.ramusage/data.ram)*100), suffix: "%", color: "#DAA520", complementBrightness: 90}
                                 ];
                                 data.chartData.hd = [
-                                    {label: "HD", value: Math.round((data.hdusage/data.storage)*100), suffix: "%", color: "forestgreen"}
+                                    {label: "HD", value: Math.round((data.hdusage/data.storage)*100), suffix: "%", color: "#228B22", complementBrightness: 90}
                                 ];
                             });
                             Servers.update(dataResponse);
