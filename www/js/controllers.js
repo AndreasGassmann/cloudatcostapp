@@ -199,7 +199,53 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
     })
 
-    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, dataRequestService) {
+    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, dataRequestService, Templates) {
+        $scope.cloudproResources = {};
+        $scope.cloudproResources.total = {};
+        $scope.cloudproResources.used = {};
+        $scope.cloudproResources.available = {};
+        $scope.cloudproResources.options = {};
+        $scope.cloudproResources.total.cpu_total = 8;
+        $scope.cloudproResources.total.ram_total = 8192;
+        $scope.cloudproResources.total.hd_total = 90;
+        $scope.cloudproResources.used.cpu_used = 3;
+        $scope.cloudproResources.used.ram_used = 3072;
+        $scope.cloudproResources.used.hd_used = 90;
+        $scope.cloudproResources.available.cpu = $scope.cloudproResources.total.cpu_used - $scope.cloudproResources.used.cpu_used;
+        $scope.cloudproResources.available.ram_used = $scope.cloudproResources.total.ram_used - $scope.cloudproResources.used.ram_used;
+        $scope.cloudproResources.available.hd_used = $scope.cloudproResources.total.hd_used - $scope.cloudproResources.used.hd_used;
+
+        $scope.cloudproResources.options = [
+            {   name: "CPU",
+                options: [
+                    {id: 1, label: 1}
+                ]
+            },
+            {   name: "RAM",
+                options: [
+                    {id: 200, label: 1}
+                ]
+            },
+            {   name: "HD",
+                options: [
+                    {id: 1, label: 1}
+                ]
+            },
+            {
+                name: "Template",
+                options: []
+            }
+        ];
+
+        _.each(Templates.data.response.data, function(data) {
+            $scope.cloudproResources.options[3].options.push({id: data.id, label: data.detail});
+        });
+
+        $scope.cloudproResources.options[0].newServer = $scope.cloudproResources.options[0].options[0];
+        $scope.cloudproResources.options[1].newServer = $scope.cloudproResources.options[1].options[0];
+        $scope.cloudproResources.options[2].newServer = $scope.cloudproResources.options[2].options[0];
+        $scope.cloudproResources.options[3].newServer = $scope.cloudproResources.options[3].options[0];
+
         dataRequestService.requestCloudproResources(function (status, data) {
             console.log(data);
             console.log(status);

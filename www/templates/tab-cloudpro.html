@@ -1,19 +1,44 @@
 <ion-view view-title="CloudPRO">
-    <ion-content has-bouncing="true">
-        <ion-refresher
-                pulling-text="Pull to refresh..."
-                on-refresh="refresh()">
-        </ion-refresher>
+    <ion-content has-bouncing="true" class="padding">
         <ion-list>
-            <div ng-hide="servers.response.data.length > 0" class="item">No servers</div>
-            <a class="item item-thumbnail-left" ng-repeat="server in servers.response.data"
-               href="#/tab/servers/{{server.id}}">
-                <img ng-src="{{getTemplateImage(server.packageid)}}">
-                <h2>{{server.lable}} ({{server.id}})</h2>
-                <p>{{server.status}}</p>
-                <p>{{server.template}}</p>
-                <p>{{server.ip}}</p>
-            </a>
+            <div class="item item-divider">
+                Create a new CloudPRO server
+            </div>
+                <label ng-repeat="options in cloudproResources.options" class="item item-input item-select">
+                    <div class="input-label">
+                        {{options.name}}
+                    </div>
+                    <select ng-model="options.newServer" ng-options="option.label for option in options.options"></select>
+                </label>
+            <button class="button button-block button-positive">
+                Create server
+            </button>
+
+            <div class="item item-divider">
+                Total resources
+            </div>
+            <ion-item class="item" type="item-text-wrap">
+                CPU <span class="item-note">{{cloudproResources.total.cpu_total}}</span>
+            </ion-item>
+            <ion-item class="item" type="item-text-wrap">
+                RAM <span class="item-note">{{cloudproResources.total.ram_total}}</span>
+            </ion-item>
+            <ion-item class="item" type="item-text-wrap">
+                HD <span class="item-note">{{cloudproResources.total.hd_total}}</span>
+            </ion-item>
+
+            <div class="item item-divider">
+                Used resources
+            </div>
+            <ion-item class="item" type="item-text-wrap">
+                CPU <span class="item-note">{{cloudproResources.used.cpu_used}}</span>
+            </ion-item>
+            <ion-item class="item" type="item-text-wrap">
+                RAM <span class="item-note">{{cloudproResources.used.ram_used}}</span>
+            </ion-item>
+            <ion-item class="item" type="item-text-wrap">
+                HD <span class="item-note">{{cloudproResources.used.hd_used}}</span>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
