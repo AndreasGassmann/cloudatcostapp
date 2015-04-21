@@ -1,15 +1,22 @@
 <ion-view view-title="Servers">
-    <ion-content has-bouncing="true">
+    <ion-content has-bouncing="true" start-y="45">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
+            <div class="bar item-input-inset">
+                <div class="item-input-wrapper">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="search" placeholder="Search" ng-model="data.searchQuery">
+                    <i ng-show="data.searchQuery.length > 0" class="icon ion-close placeholder-icon" ng-click="clearSearch()"></i>
+                </div>
+            </div>
             <div ng-hide="servers.response.data.length > 0" class="item">No servers</div>
-            <a class="item item-thumbnail-left" ng-repeat="server in servers.response.data"
+            <a class="item item-thumbnail-left" ng-repeat="server in servers.response.data | filter:data.searchQuery"
                href="#/tab/servers/{{server.id}}">
                 <img ng-src="{{getTemplateImage(server.packageid)}}">
-                <h2>{{server.lable}} ({{server.id}})</h2>
+                <h2>{{server.lable}} ({{server.id}}) {{server.servertype == 'cloudpro' ? ' PRO' : ''}}</h2>
                 <p>{{server.status}}</p>
                 <p>{{server.template}}</p>
                 <p>{{server.ip}}</p>

@@ -10,7 +10,7 @@
                     </div>
                     <select ng-model="options.newServer" ng-options="option.label for option in options.options"></select>
                 </label>
-            <button class="button button-block button-positive">
+            <button ng-click="buildServer()" class="button button-block button-positive">
                 Create server
             </button>
 
@@ -18,27 +18,28 @@
                 Total resources
             </div>
             <ion-item class="item" type="item-text-wrap">
-                CPU <span class="item-note">{{cloudproResources.total.cpu_total}}</span>
+                CPU <span class="item-note">{{cloudpro.response.data.total.cpu_total}}</span>
             </ion-item>
             <ion-item class="item" type="item-text-wrap">
-                RAM <span class="item-note">{{cloudproResources.total.ram_total}}</span>
+                RAM <span class="item-note">{{cloudpro.response.data.total.ram_total}}</span>
             </ion-item>
             <ion-item class="item" type="item-text-wrap">
-                HD <span class="item-note">{{cloudproResources.total.hd_total}}</span>
+                HD <span class="item-note">{{cloudpro.response.data.total.storage_total}}</span>
             </ion-item>
 
             <div class="item item-divider">
                 Used resources
             </div>
             <ion-item class="item" type="item-text-wrap">
-                CPU <span class="item-note">{{cloudproResources.used.cpu_used}}</span>
+                CPU <span class="item-note">{{cloudpro.response.data.used.cpu_used}}</span>
             </ion-item>
             <ion-item class="item" type="item-text-wrap">
-                RAM <span class="item-note">{{cloudproResources.used.ram_used}}</span>
+                RAM <span class="item-note">{{cloudpro.response.data.used.ram_used}}</span>
             </ion-item>
             <ion-item class="item" type="item-text-wrap">
-                HD <span class="item-note">{{cloudproResources.used.hd_used}}</span>
+                HD <span class="item-note">{{cloudpro.response.data.used.storage_used}}</span>
             </ion-item>
         </ion-list>
+        {{cloudpro}}
     </ion-content>
 </ion-view>

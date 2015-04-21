@@ -54,6 +54,24 @@ angular.module('starter.services', [])
         };
     })
 
+    .factory('Cloudpro', function(dataStorage) {
+        var cloudpro = {};
+        cloudpro.response = dataStorage.getCloudpro() || [];
+        return {
+            data: cloudpro,
+            update: function (data) {
+                console.log("saving");
+                console.log(data);
+                cloudpro.response = data;
+                dataStorage.saveCloudpro(data);
+            },
+            clear: function() {
+                cloudpro.response = [];
+                dataStorage.clearStorageField("cloudpro");
+            }
+        };
+    })
+
     .factory('dataRequestService', function($http, $ionicPopup, dataStorage, Servers, Tasks, Templates) {
         delete $http.defaults.headers.common['X-Requested-With'];
 
@@ -148,6 +166,32 @@ angular.module('starter.services', [])
                 url: 'https://panel.cloudatcost.com/api/v1/powerop.php',
                 method: 'POST',
                 data: "key="+APIKey+"&login="+email+"&sid="+serverId+"&action="+action
+            }).success(function(data, status, headers, config){
+                callback(data);
+            }).error(function(data, status, headers, config){
+                if (data.result === "successful") {
+                    callback(data);
+                } else {
+                    if (data.error_description) {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
+                    }
+                }
+            });
+        };
+        var POSTcloudproBuildServer = function(email, APIKey, cpu, ram, storage, os, callback) {
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+            $http({
+                url: 'https://panel.cloudatcost.com/api/v1/cloudpro/build.php',
+                method: 'POST',
+                data: "key="+APIKey+"&login="+email+"&cpu="+cpu+"&ram="+ram+"&storage="+storage+"&os="+os
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -525,6 +569,11 @@ angular.module('starter.services', [])
                 var APIKey = dataStorage.getAPIKey();
                 POSTpowerOperation(email, APIKey, serverId, action, callback);
             },
+            cloudproBuildServer: function(cpu, ram, storage, os, callback) {
+                var email = dataStorage.getEmail();
+                var APIKey = dataStorage.getAPIKey();
+                POSTcloudproBuildServer(email, APIKey, cpu, ram, storage, os, callback);
+            },
             renameServer: function(serverId, newServerName, callback) {
                 var email = dataStorage.getEmail();
                 var APIKey = dataStorage.getAPIKey();
@@ -564,6 +613,9 @@ angular.module('starter.services', [])
             saveTemplates: function(templates) {
                 window.localStorage.setItem("templates", AES.encrypt(JSON.stringify(templates), passphrase));
             },
+            saveCloudpro: function(cloudpro) {
+                window.localStorage.setItem("cloudpro", AES.encrypt(JSON.stringify(cloudpro), passphrase));
+            },
             getEmail: function() {
                 if (window.localStorage.getItem("email")) {
                     return AES.decrypt(window.localStorage.getItem("email"), passphrase);
@@ -602,6 +654,13 @@ angular.module('starter.services', [])
             getTemplates: function() {
                 if (window.localStorage.getItem("templates")) {
                     return isJson(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) : "";
+                } else {
+                    return [];
+                }
+            },
+            getCloudpro: function() {
+                if (window.localStorage.getItem("cloudpro")) {
+                    return isJson(AES.decrypt(window.localStorage.getItem("cloudpro"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("cloudpro"), passphrase)) : "";
                 } else {
                     return [];
                 }
