@@ -31,6 +31,9 @@
                 <a ng-click="ServerPowerOff(server.server.id)" class="button button-positive">Power off</a>
                 <a ng-click="ServerReset(server.server.id)" class="button button-positive">Restart</a>
             </div>
+            <button ng-click="switchRunmode(server.server.id, server.server.mode)" class="button button-block button-positive">
+                Switch runmode to {{ server.server.mode == 'Safe' ? 'normal' : 'safe' }}
+            </button>
             <button ng-click="renameServer(server.server.id, server.server.label)" class="button button-block button-positive">
                 Rename Server
             </button>
@@ -39,6 +42,9 @@
             </button>
             <button ng-click="getConsole(server.server.id)" class="button button-block button-positive">
                 Open Console
+            </button>
+            <button ng-if="server.server.servertype == 'cloudpro'" ng-click="deleteServer(server.server.id)" class="button button-block button-assertive">
+                Delete Server
             </button>
         </ion-list>
     </ion-content>

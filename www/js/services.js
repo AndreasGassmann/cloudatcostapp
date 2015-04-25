@@ -107,8 +107,6 @@ angular.module('starter.services', [])
         };
         var POSTrenameServer = function(email, APIKey, serverId, newServerName, callback) {
             $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-            console.log("renaming server:");
-            console.log('https://panel.cloudatcost.com/api/v1/renameserver.php: ' + "key="+APIKey+"&login="+email+"&sid="+serverId+"&name="+newServerName);
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/renameserver.php',
                 method: 'POST',
@@ -135,11 +133,36 @@ angular.module('starter.services', [])
         };
         var POSTmodifyDNS = function(email, APIKey, serverId, newHostname, callback) {
             $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-            console.log("https://panel.cloudatcost.com/api/v1/rdns.php: key="+APIKey+"&login="+email+"&sid="+serverId+"&hostname="+newHostname);
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/rdns.php',
                 method: 'POST',
                 data: "key="+APIKey+"&login="+email+"&sid="+serverId+"&hostname="+newHostname
+            }).success(function(data, status, headers, config){
+                callback(data);
+            }).error(function(data, status, headers, config){
+                if (data.result === "successful") {
+                    callback(data);
+                } else {
+                    if (data.error_description) {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
+                    }
+                }
+            });
+        };
+        var POSTswitchRunmode = function(email, APIKey, serverId, mode, callback) {
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+            $http({
+                url: 'https://panel.cloudatcost.com/api/v1/runmode.php',
+                method: 'POST',
+                data: "key="+APIKey+"&login="+email+"&sid="+serverId+"&mode="+mode
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -212,6 +235,34 @@ angular.module('starter.services', [])
                 }
             });
         };
+
+        var POSTcloudproDeleteServer = function(email, APIKey, serverId, callback) {
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+            $http({
+                url: 'https://panel.cloudatcost.com/api/v1/cloudpro/delete.php',
+                method: 'POST',
+                data: "key="+APIKey+"&login="+email+"&sid="+serverId
+            }).success(function(data, status, headers, config){
+                callback(data);
+            }).error(function(data, status, headers, config){
+                if (data.result === "successful") {
+                    callback(data);
+                } else {
+                    if (data.error_description) {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error: ' + data.error_description
+                        });
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Oh no!',
+                            template: 'There was an error, please try again.'
+                        });
+                    }
+                }
+            });
+        };
+
         var getIp = function(callback) {
             $http({
                 method: 'GET',
@@ -569,10 +620,20 @@ angular.module('starter.services', [])
                 var APIKey = dataStorage.getAPIKey();
                 POSTpowerOperation(email, APIKey, serverId, action, callback);
             },
+            switchRunmode: function(mode, serverId, callback) {
+                var email = dataStorage.getEmail();
+                var APIKey = dataStorage.getAPIKey();
+                POSTswitchRunmode(email, APIKey, serverId, mode, callback);
+            },
             cloudproBuildServer: function(cpu, ram, storage, os, callback) {
                 var email = dataStorage.getEmail();
                 var APIKey = dataStorage.getAPIKey();
                 POSTcloudproBuildServer(email, APIKey, cpu, ram, storage, os, callback);
+            },
+            cloudproDeleteServer: function(serverId, callback) {
+                var email = dataStorage.getEmail();
+                var APIKey = dataStorage.getAPIKey();
+                POSTcloudproDeleteServer(email, APIKey, serverId, callback);
             },
             renameServer: function(serverId, newServerName, callback) {
                 var email = dataStorage.getEmail();

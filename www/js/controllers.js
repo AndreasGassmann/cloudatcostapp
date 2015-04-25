@@ -126,6 +126,25 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             });
         };
 
+        $scope.switchRunmode = function(serverId, currentRunmode) {
+            var newMode = currentRunmode == 'Safe' ? 'normal' : 'safe';
+
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Switch Runmode',
+                template: 'Are you sure you want to the runmode to ' + newMode + '?'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    dataRequestService.switchRunmode(newMode, serverId, function(data){
+                        $ionicPopup.alert({
+                            title: 'Switch Runmode',
+                            template: 'Runmode will be switched'
+                        });
+                    });
+                }
+            });
+        };
+
         $scope.renameServer = function(serverId, currentServerName) {
             $scope.data = {};
 
@@ -179,6 +198,38 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                                     $ionicPopup.alert({
                                         title: 'Success!',
                                         template: 'Your reverse DNS has been changed'
+                                    });
+                                });
+                            }
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.deleteServer = function(serverId) {
+            $scope.data = {};
+            var confirmationText = 'yes';
+
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.confirmationText">',
+                title: 'Are you sure you want to delete this server?',
+                subTitle: 'Deleting your server cannot be undone. Please enter "'+confirmationText+'" to confirm:<br />',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Delete</b>',
+                        type: 'button-assertive',
+                        onTap: function(e) {
+                            if (!($scope.data.confirmationText === confirmationText)) {
+                                //don't allow the user to close unless he enters something new
+                                e.preventDefault();
+                            } else {
+                                dataRequestService.cloudproDeleteServer(serverId, function(data) {
+                                    $ionicPopup.alert({
+                                        title: 'Success!',
+                                        template: 'Server has been deleted.'
                                     });
                                 });
                             }
