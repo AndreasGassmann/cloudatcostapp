@@ -72,7 +72,7 @@ angular.module('starter.services', [])
         };
     })
 
-    .factory('dataRequestService', function($http, $ionicPopup, dataStorage, Servers, Tasks, Templates) {
+    .factory('dataRequestService', function($http, $ionicPopup, dataStorage, Servers, Tasks, Templates, Cloudpro) {
         delete $http.defaults.headers.common['X-Requested-With'];
 
         var responseStatus = {};
@@ -578,25 +578,39 @@ angular.module('starter.services', [])
                                         if (status == 200) {
                                             responseStatus.message = "";
                                             Templates.update(dataResponse);
+                                            requestCloudproResources(APIKey, email, function (status, data) {
+                                                if (status == 200) {
+                                                    responseStatus.message = "";
+                                                    Cloudpro.update(data);
+                                                    callback();
+                                                } else {
+                                                    getIp(function(data) {
+                                                        responseStatus.message = errorMessage + data;
+                                                        callback();
+                                                    });
+                                                }
+                                            });
                                         } else {
                                             getIp(function(data) {
                                                 responseStatus.message = errorMessage + data;
+                                                callback();
                                             });
                                         }
                                     });
                                 } else {
                                     getIp(function(data) {
                                         responseStatus.message = errorMessage + data;
+                                        callback();
                                     });
                                 }
                             });
                         } else {
                             getIp(function(data) {
                                 responseStatus.message = errorMessage + data;
+                                callback();
                             });
                         }
                     });
-                    callback();
                 } else {
                     responseStatus.message = "Please set your Email and API-Key in the settings and try again";
                     callback();

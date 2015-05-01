@@ -257,8 +257,14 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
     })
 
-    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, dataRequestService, Templates, Cloudpro) {
+    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, $ionicHistory, dataRequestService, Templates, Cloudpro) {
 
+        $scope.refresh = function() {
+            dataRequestService.getData(function() {
+                $ionicHistory.clearCache();
+                $scope.$broadcast('scroll.refreshComplete');
+            });
+        };
 
         $scope.cloudproResources = {};
         $scope.cloudproResources.total = {};
@@ -303,7 +309,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             for(x = 1; x <= Math.floor(($scope.cloudpro.response.data.total.ram_total - $scope.cloudpro.response.data.used.ram_used) / 512); x++) {
                 $scope.cloudproResources.options[1].options.push({id: x*512, label: (x*512) + " MB"});
             }
-            for(x = 1; x <= Math.floor(($scope.cloudpro.response.data.total.storage_total - $scope.cloudpro.response.data.used.storage_used) / 5); x++) {
+            for(x = 2; x <= Math.floor(($scope.cloudpro.response.data.total.storage_total - $scope.cloudpro.response.data.used.storage_used) / 5); x++) {
                 $scope.cloudproResources.options[2].options.push({id: x*5, label: (x*5) + " GB"});
             }
         }
@@ -320,7 +326,11 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.buildServer = function() {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Build new server',
-                template: 'Are you sure you want to build a new pro server with the following resources?'
+                template: 'Are you sure you want to build a new pro server with the following resources?<br />' +
+                'CPU: ' + $scope.cloudproResources.options[0].newServer.id + '<br />' +
+                'RAM: ' + $scope.cloudproResources.options[1].newServer.id + ' MB<br />' +
+                'HD: ' + $scope.cloudproResources.options[2].newServer.id + ' GB<br />' +
+                'Template: ' + $scope.cloudproResources.options[3].newServer.label + '<br />'
             });
             confirmPopup.then(function(res) {
                 if(res) {
@@ -332,15 +342,9 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                     });
                 }
             });
-
-
         };
 
-        dataRequestService.requestCloudproResources(function (status, data) {
-            console.log(data);
-            console.log(status);
-            Cloudpro.update(data);
-        });
+        $scope.refresh();
     })
     .controller('CloudproDetailCtrl', function($scope, $state, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates) {
 

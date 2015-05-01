@@ -1,5 +1,9 @@
 <ion-view view-title="CloudPRO">
-    <ion-content has-bouncing="true" class="padding">
+    <ion-content has-bouncing="true" padding="true">
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="refresh()">
+        </ion-refresher>
         <ion-list>
             <div class="item item-divider">
                 Create a new CloudPRO server
@@ -40,6 +44,5 @@
                 HD <span class="item-note">{{cloudpro.response.data.used.storage_used}}</span>
             </ion-item>
         </ion-list>
-        {{cloudpro}}
     </ion-content>
 </ion-view>
