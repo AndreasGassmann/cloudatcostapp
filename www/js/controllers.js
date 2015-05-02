@@ -1,19 +1,27 @@
 angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
     .controller('DashCtrl', function($scope, $ionicHistory, dataRequestService, dataStorage, Servers, Tasks, Templates) {
-        $scope.status = false;
-        $scope.servers = Servers.data;
-        $scope.tasks = Tasks.data;
-        $scope.templates = Templates.data;
-        $scope.status = dataRequestService.status;
-        $scope.chartOptions = {thickness: 10, mode: "gauge", total: 100};
-
         $scope.refresh = function() {
             dataRequestService.getData(function() {
                 $ionicHistory.clearHistory();
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };
+
+        if (!window.localStorage.getItem('appVersion')) {
+            dataStorage.updateStorage(function() {
+                $scope.refresh();
+                window.localStorage.setItem('appVersion', 1);
+                //$ionicHistory.clearCache();
+            });
+        }
+
+        $scope.status = false;
+        $scope.servers = Servers.data;
+        $scope.tasks = Tasks.data;
+        $scope.templates = Templates.data;
+        $scope.status = dataRequestService.status;
+        $scope.chartOptions = {thickness: 10, mode: "gauge", total: 100};
     })
 
     .controller('ServerCtrl', function($scope, $ionicHistory, dataRequestService, Servers) {
@@ -222,7 +230,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                         text: '<b>Delete</b>',
                         type: 'button-assertive',
                         onTap: function(e) {
-                            if (!($scope.data.confirmationText === confirmationText)) {
+                            if (!($scope.data.confirmationText.toLowerCase() === confirmationText)) {
                                 //don't allow the user to close unless he enters something new
                                 e.preventDefault();
                             } else {
@@ -267,32 +275,25 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
 
         $scope.cloudproResources = {};
-        $scope.cloudproResources.total = {};
-        $scope.cloudproResources.used = {};
-        $scope.cloudproResources.available = {};
-        $scope.cloudproResources.options = {};
-        $scope.cloudproResources.total.cpu_total = 8;
-        $scope.cloudproResources.total.ram_total = 8192;
-        $scope.cloudproResources.total.hd_total = 90;
-        $scope.cloudproResources.used.cpu_used = 3;
-        $scope.cloudproResources.used.ram_used = 3072;
-        $scope.cloudproResources.used.hd_used = 90;
-        $scope.cloudproResources.available.cpu = $scope.cloudproResources.total.cpu_used - $scope.cloudproResources.used.cpu_used;
-        $scope.cloudproResources.available.ram_used = $scope.cloudproResources.total.ram_used - $scope.cloudproResources.used.ram_used;
-        $scope.cloudproResources.available.hd_used = $scope.cloudproResources.total.hd_used - $scope.cloudproResources.used.hd_used;
 
         $scope.cloudproResources.options = [
             {
                 name: "CPU",
-                options: []
+                options: [
+                    {id: 1, label: 1}
+                ]
             },
             {
                 name: "RAM",
-                options: []
+                options: [
+                    {id: 512, label: "512 MB"}
+                ]
             },
             {
                 name: "HD",
-                options: []
+                options: [
+                    {id: 10, label: "10 GB"}
+                ]
             },
             {
                 name: "Template",
@@ -300,27 +301,39 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             }
         ];
 
+        var updateOptions = function() {
+            // TODO keep standard values (from above) if there are no more resources available
+            if ($scope.cloudpro.response.hasOwnProperty('data')) {
+                $scope.cloudproResources.options[0].options = [];
+                for(var x = 1; x <= $scope.cloudpro.response.data.total.cpu_total - $scope.cloudpro.response.data.used.cpu_used; x++) {
+                    $scope.cloudproResources.options[0].options.push({id: x, label: x});
+                }
+                $scope.cloudproResources.options[1].options = [];
+                for(x = 1; x <= Math.floor(($scope.cloudpro.response.data.total.ram_total - $scope.cloudpro.response.data.used.ram_used) / 512); x++) {
+                    $scope.cloudproResources.options[1].options.push({id: x*512, label: (x*512) + " MB"});
+                }
+                $scope.cloudproResources.options[2].options = [];
+                for(x = 2; x <= Math.floor(($scope.cloudpro.response.data.total.storage_total - $scope.cloudpro.response.data.used.storage_used) / 5); x++) {
+                    $scope.cloudproResources.options[2].options.push({id: x*5, label: (x*5) + " GB"});
+                }
+                $scope.cloudproResources.options[0].newServer = $scope.cloudproResources.options[0].options[0];
+                $scope.cloudproResources.options[1].newServer = $scope.cloudproResources.options[1].options[0];
+                $scope.cloudproResources.options[2].newServer = $scope.cloudproResources.options[2].options[0];
+            }
+        };
+
         $scope.cloudpro = Cloudpro.data;
 
-        if ($scope.cloudpro.response.hasOwnProperty('data')) {
-            for(var x = 1; x <= $scope.cloudpro.response.data.total.cpu_total - $scope.cloudpro.response.data.used.cpu_used; x++) {
-                $scope.cloudproResources.options[0].options.push({id: x, label: x});
-            }
-            for(x = 1; x <= Math.floor(($scope.cloudpro.response.data.total.ram_total - $scope.cloudpro.response.data.used.ram_used) / 512); x++) {
-                $scope.cloudproResources.options[1].options.push({id: x*512, label: (x*512) + " MB"});
-            }
-            for(x = 2; x <= Math.floor(($scope.cloudpro.response.data.total.storage_total - $scope.cloudpro.response.data.used.storage_used) / 5); x++) {
-                $scope.cloudproResources.options[2].options.push({id: x*5, label: (x*5) + " GB"});
-            }
-        }
+        // Update detail view when new data is available
+        $scope.$watch('cloudpro', function () {
+            updateOptions();
+        }, true);
+
+        updateOptions();
 
         _.each(Templates.data.response.data, function(data) {
             $scope.cloudproResources.options[3].options.push({id: data.id, label: data.detail});
         });
-
-        $scope.cloudproResources.options[0].newServer = $scope.cloudproResources.options[0].options[0];
-        $scope.cloudproResources.options[1].newServer = $scope.cloudproResources.options[1].options[0];
-        $scope.cloudproResources.options[2].newServer = $scope.cloudproResources.options[2].options[0];
         $scope.cloudproResources.options[3].newServer = $scope.cloudproResources.options[3].options[0];
 
         $scope.buildServer = function() {
@@ -343,11 +356,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 }
             });
         };
-
-        $scope.refresh();
-    })
-    .controller('CloudproDetailCtrl', function($scope, $state, $ionicPopup, dataRequestService, dataStorage, Servers, Tasks, Templates) {
-
     })
 
     .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates) {
@@ -358,6 +366,9 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             APIKey: dataStorage.getAPIKey(),
             showAPIKey: false
         };
+
+        console.log(dataStorage.getEmail());
+        console.log(dataStorage.getAPIKey());
 
         $scope.saveData = function() {
             dataStorage.saveEmail($scope.settings.email);

@@ -60,8 +60,6 @@ angular.module('starter.services', [])
         return {
             data: cloudpro,
             update: function (data) {
-                console.log("saving");
-                console.log(data);
                 cloudpro.response = data;
                 dataStorage.saveCloudpro(data);
             },
@@ -282,13 +280,11 @@ angular.module('starter.services', [])
                     "api": "v1",
                     "action": "resources",
                     "data": {
-                        "total": [
-                            {
-                                "cpu_total": "8",
-                                "ram_total": "8192",
-                                "storage_total": "120"
-                            }
-                        ],
+                        "total": {
+                            "cpu_total": "8",
+                            "ram_total": "8192",
+                            "storage_total": "120"
+                        },
                         "used": {
                             "cpu_used": "3",
                             "ram_used": "3072",
@@ -667,75 +663,74 @@ angular.module('starter.services', [])
     })
 
     .factory('dataStorage', function(AES) {
-        var passphrase = "SECRET_PASS_PHRASE";
 
         return {
             saveEmail: function(email) {
-                window.localStorage.setItem("email", AES.encrypt(email, passphrase));
+                window.localStorage.setItem("email", AES.encrypt(email));
             },
             saveAPIKey: function(APIKey) {
-                window.localStorage.setItem("APIKey", AES.encrypt(APIKey, passphrase));
+                window.localStorage.setItem("APIKey", AES.encrypt(APIKey));
             },
             saveResponseTime: function(responseTime) {
-                window.localStorage.setItem("responseTime", AES.encrypt(responseTime, passphrase));
+                window.localStorage.setItem("responseTime", AES.encrypt(responseTime));
             },
             saveServers: function(servers) {
-                window.localStorage.setItem("servers", AES.encrypt(JSON.stringify(servers), passphrase));
+                window.localStorage.setItem("servers", AES.encrypt(JSON.stringify(servers)));
             },
             saveTasks: function(tasks) {
-                window.localStorage.setItem("tasks", AES.encrypt(JSON.stringify(tasks), passphrase));
+                window.localStorage.setItem("tasks", AES.encrypt(JSON.stringify(tasks)));
             },
             saveTemplates: function(templates) {
-                window.localStorage.setItem("templates", AES.encrypt(JSON.stringify(templates), passphrase));
+                window.localStorage.setItem("templates", AES.encrypt(JSON.stringify(templates)));
             },
             saveCloudpro: function(cloudpro) {
-                window.localStorage.setItem("cloudpro", AES.encrypt(JSON.stringify(cloudpro), passphrase));
+                window.localStorage.setItem("cloudpro", AES.encrypt(JSON.stringify(cloudpro)));
             },
             getEmail: function() {
                 if (window.localStorage.getItem("email")) {
-                    return AES.decrypt(window.localStorage.getItem("email"), passphrase);
+                    return AES.decrypt(window.localStorage.getItem("email"));
                 } else {
                     return "";
                 }
             },
             getAPIKey: function() {
                 if (window.localStorage.getItem("APIKey")) {
-                    return AES.decrypt(window.localStorage.getItem("APIKey"), passphrase);
+                    return AES.decrypt(window.localStorage.getItem("APIKey"));
                 } else {
                     return "";
                 }
             },
             getResponseTime: function() {
                 if (window.localStorage.getItem("responseTime")) {
-                    return AES.decrypt(window.localStorage.getItem("responseTime"), passphrase);
+                    return AES.decrypt(window.localStorage.getItem("responseTime"));
                 } else {
                     return "";
                 }
             },
             getServers: function() {
                 if (window.localStorage.getItem("servers")) {
-                    return isJson(AES.decrypt(window.localStorage.getItem("servers"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("servers"), passphrase)) : "";
+                    return isJson(AES.decrypt(window.localStorage.getItem("servers"))) ? JSON.parse(AES.decrypt(window.localStorage.getItem("servers"))) : [];
                 } else {
                     return [];
                 }
             },
             getTasks: function() {
                 if (window.localStorage.getItem("tasks")) {
-                    return isJson(AES.decrypt(window.localStorage.getItem("tasks"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("tasks"), passphrase)) : "";
+                    return isJson(AES.decrypt(window.localStorage.getItem("tasks"))) ? JSON.parse(AES.decrypt(window.localStorage.getItem("tasks"))) : [];
                 } else {
                     return [];
                 }
             },
             getTemplates: function() {
                 if (window.localStorage.getItem("templates")) {
-                    return isJson(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("templates"), passphrase)) : "";
+                    return isJson(AES.decrypt(window.localStorage.getItem("templates"))) ? JSON.parse(AES.decrypt(window.localStorage.getItem("templates"))) : [];
                 } else {
                     return [];
                 }
             },
             getCloudpro: function() {
                 if (window.localStorage.getItem("cloudpro")) {
-                    return isJson(AES.decrypt(window.localStorage.getItem("cloudpro"), passphrase)) ? JSON.parse(AES.decrypt(window.localStorage.getItem("cloudpro"), passphrase)) : "";
+                    return isJson(AES.decrypt(window.localStorage.getItem("cloudpro"))) ? JSON.parse(AES.decrypt(window.localStorage.getItem("cloudpro"))) : [];
                 } else {
                     return [];
                 }
@@ -747,24 +742,51 @@ angular.module('starter.services', [])
             },
             clearStorageField: function (string) {
                 window.localStorage.removeItem(string);
+            },
+            updateStorage: function(callback) {
+                console.log("Email" + this.getEmail());
+                this.saveEmail(this.getEmail());
+                this.saveAPIKey(this.getAPIKey());
+
+                localStorage.removeItem("responseTime");
+                localStorage.removeItem("servers");
+                localStorage.removeItem("tasks");
+                localStorage.removeItem("templates");
+                localStorage.removeItem("cloudpro");
+
+                callback();
             }
         };
     })
 
     .factory('AES', function() {
-        var iterationCount = 1000;
+        var passphrase = "SECRET_PASS_PHRASE";
+
+        var iterationCount = 1;
         var keySize = 128;
         var iv = "6edmJL==2c3#2@t6HMeWNLu{NY6z4U";
         var salt = "v?BBKmLuPcxEaETj=Ujx3/Tm6{8uY9zwXm2GfsGdHT6WHtEH]84k+8n26kj9}EWX[AFQLi]U63J)mPme";
 
         var aesUtil = new AesUtil(keySize, iterationCount);
 
+        var decryptLegacy = function(text) {
+            var aesUtilLegacy = new AesUtil(keySize, 1000);
+            return aesUtilLegacy.decrypt(salt, iv, passphrase, text);
+        };
+
         return {
-            encrypt: function(text, passphrase) {
+            encrypt: function(text) {
                 return aesUtil.encrypt(salt, iv, passphrase, text);
             },
-            decrypt: function(text, passphrase) {
-                return aesUtil.decrypt(salt, iv, passphrase, text);
+            decrypt: function(text) {
+                try {
+                    if (!localStorage.getItem('appVersion')) {
+                        return decryptLegacy(text);
+                    }
+                    return aesUtil.decrypt(salt, iv, passphrase, text);
+                } catch (e) {
+                    return decryptLegacy(text);
+                }
             }
         };
     });
