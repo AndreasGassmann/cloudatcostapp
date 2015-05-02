@@ -40,6 +40,23 @@ $ ionic emulate android
 ````
 
 ### Changelog
+##### 1.1.0
+Features:
+- Support for CloudPRO resources
+ - View available resources and build or delete new servers right from within the app
+- Change runmode of a server
+- Search for a server
+
+Changes:
+- Added icons for docker and FreeBSD templates
+- Improved the design of the pie-charts
+
+Fixes:
+- The charts on the dashboard were sometimes not displayed properly
+- Performance improvements
+##### 1.0.2
+Rename Servers
+Modify reverse DNS
 ##### 1.0.1
 Added QR-Scanner
 ##### 1.0.0
