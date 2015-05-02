@@ -12,7 +12,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             dataStorage.updateStorage(function() {
                 $scope.refresh();
                 window.localStorage.setItem('appVersion', 1);
-                //$ionicHistory.clearCache();
             });
         }
 
@@ -366,9 +365,6 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             APIKey: dataStorage.getAPIKey(),
             showAPIKey: false
         };
-
-        console.log(dataStorage.getEmail());
-        console.log(dataStorage.getAPIKey());
 
         $scope.saveData = function() {
             dataStorage.saveEmail($scope.settings.email);
