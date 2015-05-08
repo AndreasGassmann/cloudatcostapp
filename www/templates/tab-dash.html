@@ -58,7 +58,7 @@
 
                 <div ng-if="tasks.response.data.length > 0" class="list">
                     <div ng-repeat="task in tasks.response.data | reverse" class="item">
-                        {{task.serverid}}: {{task.action}} {{task.status}} <span class="item-note"><span
+                        <span ng-if="task.serverid">{{task.serverid}}: </span>{{task.action}} {{task.status}} <span class="item-note"><span
                             am-time-ago="task.finishtime*1000"></span></span>
                     </div>
                 </div>
