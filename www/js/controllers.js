@@ -244,6 +244,8 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
                                     // Go back to servers
                                     $ionicHistory.goBack(-1);
+                                    // Refresh servers
+                                    dataRequestService.getData(function(){});
                                 });
                             }
                         }
@@ -365,6 +367,8 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                             title: 'Success!',
                             template: 'Your server will be built'
                         });
+                        // Refresh servers
+                        dataRequestService.getData(function(){});
                     });
                 }
             });
