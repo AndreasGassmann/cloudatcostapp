@@ -330,9 +330,14 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
         updateOptions();
 
-        _.each(Templates.data.response.data, function(data) {
-            $scope.cloudproResources.options[3].options.push({id: data.id, label: data.detail});
+        var sortedTemplates = _.sortBy(Templates.data.response.data, function(template){
+            return template.name;
         });
+
+        _.each(sortedTemplates, function(data) {
+            $scope.cloudproResources.options[3].options.push({id: data.ce_id, label: data.name});
+        });
+        
         $scope.cloudproResources.options[3].newServer = $scope.cloudproResources.options[3].options[0];
 
         $scope.buildServer = function() {
