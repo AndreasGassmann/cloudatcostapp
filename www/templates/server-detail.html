@@ -43,8 +43,8 @@
             <button ng-click="getConsole(server.server.id)" class="button button-block button-positive">
                 Open Console
             </button>
-            <button ng-if="server.server.servertype == 'cloudpro'" ng-click="deleteServer(server.server.id)" class="button button-block button-assertive">
-                Delete Server
+            <button ng-if="server.server.servertype == 'cloudpro'" ng-click="deleteServer(server.server.id)" ng-disabled="deletingServer" class="button button-block button-assertive">
+                <label ng-if="!deletingServer">Delete Server</label> <label ng-if="deletingServer">Deleting Server</label><ion-spinner class="spinnerButtonPadding" ng-if="deletingServer"></ion-spinner>                
             </button>
         </ion-list>
     </ion-content>

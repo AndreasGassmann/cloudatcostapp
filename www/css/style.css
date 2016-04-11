@@ -26,3 +26,9 @@
 .statusDot.error{
     background: orangered;
 }
+
+.spinnerButtonPadding {
+  padding-left: 10px; 
+  padding-top: 7px;
+  position: absolute;
+}

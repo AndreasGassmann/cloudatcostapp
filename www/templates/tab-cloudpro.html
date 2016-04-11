@@ -14,8 +14,8 @@
                     </div>
                     <select ng-model="options.newServer" ng-options="option.label for option in options.options"></select>
                 </label>
-            <button ng-click="buildServer()" class="button button-block button-positive">
-                Create server
+            <button ng-click="buildServer()" ng-disabled="buildingServer" class="button button-block button-positive">
+                <label ng-if="!buildingServer">Create server</label> <label ng-if="buildingServer">Creating server</label><ion-spinner class="spinnerButtonPadding" ng-if="buildingServer"></ion-spinner>
             </button>
 
             <div class="item item-divider">
