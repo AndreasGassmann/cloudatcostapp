@@ -71,7 +71,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicPopup, dataRequestService, Servers, Tasks) {
+    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicHistory, $ionicPopup, dataRequestService, Servers, Tasks) {
         $scope.server = {};
         $scope.allServers = Servers.data;
         $scope.allTasks = Tasks.data;
@@ -216,6 +216,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
         $scope.deleteServer = function(serverId) {
             $scope.data = {};
+            $scope.deletingServer = false;
             var confirmationText = 'yes';
 
             var myPopup = $ionicPopup.show({
@@ -233,11 +234,18 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                                 //don't allow the user to close unless he enters something new
                                 e.preventDefault();
                             } else {
+                                $scope.deletingServer = true;
                                 dataRequestService.cloudproDeleteServer(serverId, function(data) {
+                                    $scope.deletingServer = false;
                                     $ionicPopup.alert({
                                         title: 'Success!',
                                         template: 'Server has been deleted.'
                                     });
+
+                                    // Go back to servers
+                                    $ionicHistory.goBack(-1);
+                                    // Refresh servers
+                                    dataRequestService.getData(function(){});
                                 });
                             }
                         }
@@ -330,12 +338,18 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
         updateOptions();
 
-        _.each(Templates.data.response.data, function(data) {
-            $scope.cloudproResources.options[3].options.push({id: data.id, label: data.detail});
+        var sortedTemplates = _.sortBy(Templates.data.response.data, function(template){
+            return template.name;
         });
+
+        _.each(sortedTemplates, function(data) {
+            $scope.cloudproResources.options[3].options.push({id: data.ce_id, label: data.name});
+        });
+        
         $scope.cloudproResources.options[3].newServer = $scope.cloudproResources.options[3].options[0];
 
         $scope.buildServer = function() {
+            $scope.buildingServer = false;
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Build new server',
                 template: 'Are you sure you want to build a new pro server with the following resources?<br />' +
@@ -346,11 +360,15 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             });
             confirmPopup.then(function(res) {
                 if(res) {
+                    $scope.buildingServer = true;
                     dataRequestService.cloudproBuildServer($scope.cloudproResources.options[0].newServer.id, $scope.cloudproResources.options[1].newServer.id, $scope.cloudproResources.options[2].newServer.id, $scope.cloudproResources.options[3].newServer.id, function() {
+                        $scope.buildingServer = false;
                         $ionicPopup.alert({
                             title: 'Success!',
                             template: 'Your server will be built'
                         });
+                        // Refresh servers
+                        dataRequestService.getData(function(){});
                     });
                 }
             });
