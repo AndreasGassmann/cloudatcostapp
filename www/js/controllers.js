@@ -71,7 +71,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicHistory, $ionicPopup, dataRequestService, Servers, Tasks) {
+    .controller('ServerDetailCtrl', function($scope, $stateParams, $ionicHistory, $ionicPopup, $cordovaClipboard, dataRequestService, Servers, Tasks) {
         $scope.server = {};
         $scope.allServers = Servers.data;
         $scope.allTasks = Tasks.data;
@@ -268,7 +268,22 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 }
             });
             return result;
-        }
+        };
+
+        $scope.copyTextToClipboard = function(value) {
+            $cordovaClipboard.copy(value).then(function() {
+                $ionicPopup.alert({
+                    title: 'Copied to clipboard:',
+                    template: value
+                });
+            }, function() {
+                $ionicPopup.alert({
+                    title: 'Error',
+                    template: 'Value could not be copied to clipboard'
+                });
+
+            });
+        };
 
     })
 
