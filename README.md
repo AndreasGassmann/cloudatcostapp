@@ -38,6 +38,19 @@ $ ionic emulate android
 ````
 
 ### Changelog
+
+#### 1.2.0
+Features:
+- Loading indicators when creating a new server
+- Copy server fields by tapping and holding them
+
+Fixes:
+- Templates are displayed correctly
+- Special characters in email addresses should now work
+
+Changes:
+- Updated dependencies
+
 #### 1.1.0
 Features:
 - Support for CloudPRO resources

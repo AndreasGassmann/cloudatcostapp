@@ -1,6 +1,6 @@
 {
   "name": "cloudatcost",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "CloudAtCost: An Ionic project",
   "scripts": {
     "start": "ionic serve",
