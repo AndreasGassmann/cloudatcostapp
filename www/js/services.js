@@ -549,7 +549,14 @@ angular.module('starter.services', [])
 
                     var errorMessage = "There was an error. Make sure your credentials are correct and you set the correct IP in the CloudAtCost Panel.";
                     startRequest("servers", APIKey, email, function (status, dataResponse) {
-                        if (status == 200) {
+                        if (dataResponse === "We are currently performing maintenance") {
+                            $ionicPopup.alert({
+                                title: 'Error!',
+                                template: 'CloudAtCost is currently performing maintenance. Please try again later.'
+                            });
+                        }
+
+                        if (status === 200) {
                             responseStatus.message = "";
                             _.each(dataResponse.data, function(data) {
                                 data.chartData = {};
