@@ -15,6 +15,7 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
@@ -24,10 +25,6 @@
   <feature name="InAppBrowser">
     <param name="ios-package" value="CDVInAppBrowser"/>
     <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
-  </feature>
-  <feature name="BarcodeScanner">
-    <param name="id" value="com.phonegap.plugins.barcodescanner"/>
-    <param name="url" value="https://github.com/wildabeast/BarcodeScanner.git"/>
   </feature>
   <platform name="ios">
     <icon src="resources/ios/icon/icon.png" width="57" height="57"/>

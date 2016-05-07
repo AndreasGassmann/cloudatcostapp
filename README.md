@@ -45,9 +45,17 @@ Before building for release on Android you need to change a file to accept cloud
 project/platforms/android/CordovaLib/src/org/apache/cordova/engine/SystemWebViewClient.java
 
 ````java
-if (error.getPrimaryError() == 3 && error.getUrl().startsWith("https://panel.cloudatcost.com/api/v1/")) {
-    handler.proceed();
-    return;
+public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+
+    ...
+    
+    if (error.getPrimaryError() == 3 && error.getUrl().startsWith("https://panel.cloudatcost.com/api/v1/")) {
+        handler.proceed();
+        return;
+    }
+    
+    ...
+
 }
 ````
 
