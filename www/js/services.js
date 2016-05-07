@@ -295,7 +295,7 @@ angular.module('starter.services', [])
             } else {
                 $http({
                     method: 'GET',
-                    url: 'https://panel.cloudatcost.com/api/v1/cloudpro/resources.php?key='+APIKey+'&login='+email
+                    url: 'https://panel.cloudatcost.com/api/v1/cloudpro/resources.php?key='+APIKey+'&login='+encodeURIComponent(email)
                 }).success(function(data, status, headers, config){
                     callback(status, data);
                 }).error(function(data, status, headers, config){
@@ -532,7 +532,7 @@ angular.module('starter.services', [])
             } else {
                 $http({
                     method: 'GET',
-                    url: 'https://panel.cloudatcost.com/api/v1/list'+list+'.php?key='+APIKey+'&login='+email
+                    url: 'https://panel.cloudatcost.com/api/v1/list'+list+'.php?key='+APIKey+'&login='+encodeURIComponent(email)
                 }).success(function(data, status, headers, config){
                     callback(status, data);
                 }).error(function(data, status, headers, config){
