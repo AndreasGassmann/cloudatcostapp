@@ -82,7 +82,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/console.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -108,7 +108,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/renameserver.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&name="+newServerName
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&name="+newServerName+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -134,7 +134,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/rdns.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&hostname="+newHostname
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&hostname="+newHostname+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -160,7 +160,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/runmode.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&mode="+mode
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&mode="+mode+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -186,7 +186,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/powerop.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&action="+action
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+"&action="+action+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -212,7 +212,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/cloudpro/build.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&cpu="+cpu+"&ram="+ram+"&storage="+storage+"&os="+os
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&cpu="+cpu+"&ram="+ram+"&storage="+storage+"&os="+os+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -239,7 +239,7 @@ angular.module('starter.services', [])
             $http({
                 url: 'https://panel.cloudatcost.com/api/v1/cloudpro/delete.php',
                 method: 'POST',
-                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId
+                data: "key="+APIKey+"&login="+encodeURIComponent(email)+"&sid="+serverId+'&ip_bypass=1'
             }).success(function(data, status, headers, config){
                 callback(data);
             }).error(function(data, status, headers, config){
@@ -295,7 +295,7 @@ angular.module('starter.services', [])
             } else {
                 $http({
                     method: 'GET',
-                    url: 'https://panel.cloudatcost.com/api/v1/cloudpro/resources.php?key='+APIKey+'&login='+encodeURIComponent(email)
+                    url: 'https://panel.cloudatcost.com/api/v1/cloudpro/resources.php?key='+APIKey+'&login='+encodeURIComponent(email)+'&ip_bypass=1'
                 }).success(function(data, status, headers, config){
                     callback(status, data);
                 }).error(function(data, status, headers, config){
@@ -532,7 +532,7 @@ angular.module('starter.services', [])
             } else {
                 $http({
                     method: 'GET',
-                    url: 'https://panel.cloudatcost.com/api/v1/list'+list+'.php?key='+APIKey+'&login='+encodeURIComponent(email)
+                    url: 'https://panel.cloudatcost.com/api/v1/list'+list+'.php?key='+APIKey+'&login='+encodeURIComponent(email)+'&ip_bypass=1'
                 }).success(function(data, status, headers, config){
                     callback(status, data);
                 }).error(function(data, status, headers, config){
