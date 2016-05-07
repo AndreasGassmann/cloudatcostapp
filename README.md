@@ -37,7 +37,26 @@ $ ionic emulate ios
 $ ionic emulate android
 ````
 
+
+### Invalid certificate
+
+Before building for release on Android you need to change a file to accept cloudatcost's invalid certificate:
+
+project/platforms/android/CordovaLib/src/org/apache/cordova/engine/SystemWebViewClient.java
+
+````java
+if (error.getPrimaryError() == 3 && error.getUrl().startsWith("https://panel.cloudatcost.com/api/v1/")) {
+    handler.proceed();
+    return;
+}
+````
+
+Source: http://ivancevich.me/articles/ignoring-invalid-ssl-certificates-on-cordova-android-ios/
+
 ### Changelog
+
+#### 1.2.2
+- Fix requests not working on Android because of an invalid certificate
 
 #### 1.2.0
 Features:
