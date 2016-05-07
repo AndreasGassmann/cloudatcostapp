@@ -23,7 +23,8 @@
     "org.apache.cordova.inappbrowser",
     "org.apache.cordova.device",
     "com.phonegap.plugins.barcodescanner",
-    "com.verso.cordova.clipboard"
+    "com.verso.cordova.clipboard",
+    "cordova-plugin-whitelist"
   ],
   "cordovaPlatforms": [
     "android",
