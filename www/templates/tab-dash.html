@@ -66,9 +66,13 @@
             <span ng-show="templates.response.status == 'ok'" class="list">
                 <div class="item item-divider">Available Templates</div>
                 <p ng-hide="templates.response.data.length > 0">No Templates</p>
-                <ul ng-if="templates.response.data.length > 0" class="list">
-                    <li ng-repeat="template in templates.response.data" class="item">{{template.name}}</li>
-                </ul>
+                <div ng-if="templates.response.data.length > 0" class="list">
+                    <span ng-repeat="template in templates.response.data" class="item item-thumbnail-left">
+                        <img ng-src="{{getTemplateImage(template.ce_id)}}">
+                        <h2>{{template.name}}</h2>
+                        <p>ID: {{template.ce_id}}</p>
+                    </span>
+                </div>
             </span>
         </ion-list>
     </ion-content>
