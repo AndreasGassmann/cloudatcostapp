@@ -48,6 +48,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
             }
           })
 
+          .state('tab.dash-server-detail', {
+              url: '/dash/:serverId',
+              views: {
+                  'tab-dash': {
+                      templateUrl: 'templates/server-detail.html',
+                      controller: 'ServerDetailCtrl'
+                  }
+              }
+          })
+
           .state('tab.servers', {
             url: '/servers',
             views: {

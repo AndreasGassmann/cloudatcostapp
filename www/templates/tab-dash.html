@@ -23,11 +23,14 @@
             </div>
             <div ng-show="servers.response.status == 'ok'" class="list card"
                  ng-repeat="server in servers.response.data">
-                <div class="item item-divider">
-                    <div class="statusDot" ng-class="server.status == 'Powered On' ? 'ok' : 'error'"></div>
-                    {{server.label}} ({{server.id}})
+                <div class="item item-avatar">
+                    <img ng-src="{{getTemplateImage(server.packageid)}}">
+                    <h2><div class="statusDot" ng-class="server.status == 'Powered On' ? 'ok' : 'error'"></div>
+                        {{server.label}} ({{server.id}})</h2>
+                    <p>CPU: {{server.cpu}} | RAM: {{server.ram}}MB | Storage: {{server.storage}}GB</p>
                 </div>
-                <div class="item item-body">
+
+                <div class="item item-image">
                     <div class="pieChart">
                         <pie-chart data="server.chartData.cpu" options="chartOptions"></pie-chart>
                     </div>
@@ -38,6 +41,11 @@
                         <pie-chart data="server.chartData.hd" options="chartOptions"></pie-chart>
                     </div>
                 </div>
+
+                <a class="item item-icon-left positive" href="#/tab/dash/{{server.id}}">
+                    <i class="icon ion-information-circled"></i>
+                    Details
+                </a>
             </div>
 
             <div class="item item-divider">
