@@ -3,7 +3,7 @@ An unofficial app to manage your CloudAtCost Account. CloudAtCostApp is built us
 Ionic is a front-end SDK based on Cordova/PhoneGap for developing hybrid mobile apps with HTML 5. You can download the App from Google's Play Store or Apple's App Store:
 
 [![Download on the App Store](https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg)](https://itunes.apple.com/en/app/cloudatcost/id975360892)
-<a href="https://play.google.com/store/apps/details?id=com.cloudatcostapp.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" align="right" height="40"></a>
+<a href="https://play.google.com/store/apps/details?id=com.cloudatcostapp.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" align="left" height="60"></a>
 
 If you have any suggestions or want to get in touch with us, you can chat with us on Gitter or tweet us at [@CloudAtCostApp](https://twitter.com/cloudatcostapp).
 
@@ -13,9 +13,9 @@ If you have any suggestions or want to get in touch with us, you can chat with u
 
 To get started, check out [Getting Started with Ionic](http://ionicframework.com/getting-started/). Here is a quick overview:
 
-First, clone this git repository and change 
+First, clone this git repository 
 ````shell
-$ git clone https://github.com/AndreasGassmann/cloudatcostapp.git cloudatcostapp
+$ git clone https://github.com/AndreasGassmann/cloudatcostapp.git
 ````
 Then download all dependencies using npm and bower
 ````shell
@@ -23,7 +23,7 @@ $ npm install -g cordova ionic ios-sim
 $ npm install
 $ bower install
 ````
-Now you can preview the app in your browser. Using the --lab flag, you will see the iOS and android version side by side
+Now you can preview the app in your browser. Using the --lab flag, you will see the iOS and android version side by side. Make sure you disable CORS in your browser while developing or HTTP requests won't work.
 ````
 $ ionic serve --lab
 ````
@@ -62,6 +62,10 @@ public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError e
 
 Source: http://ivancevich.me/articles/ignoring-invalid-ssl-certificates-on-cordova-android-ios/
 
+### Contribute
+
+This is an open source project, so please feel free to add new features
+
 ### Changelog
 
 #### 1.2.2
@@ -95,11 +99,11 @@ Fixes:
 - Performance improvements
 
 #### 1.0.2
-Rename Servers
-Modify reverse DNS
+- Rename Servers
+- Modify reverse DNS
 
 #### 1.0.1
-Added QR-Scanner
+- Added QR-Scanner
 
 #### 1.0.0
-Initial release
+- Initial release
