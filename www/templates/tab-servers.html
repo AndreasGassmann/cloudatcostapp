@@ -17,7 +17,7 @@
                href="#/tab/servers/{{server.id}}">
                 <img ng-src="{{getTemplateImage(server.packageid)}}">
                 <h2>{{server.lable}} ({{server.id}}) {{server.servertype == 'cloudpro' ? ' PRO' : ''}}</h2>
-                <p>{{server.status}}</p>
+                <p><div class="statusDot" ng-class="server.status == 'Powered On' ? 'ok' : 'error'"></div> {{server.status}}</p>
                 <p>{{server.template}}</p>
                 <p>{{server.ip}}</p>
             </a>
