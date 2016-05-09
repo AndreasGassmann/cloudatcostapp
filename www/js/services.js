@@ -39,6 +39,28 @@ angular.module('starter.services', [])
     })
 
     .factory('Templates', function(dataStorage) {
+
+        var template_images = [];
+        template_images[74] = 'freebsd';
+        template_images[26] = 'centos';
+        template_images[27] = 'ubuntu';
+        template_images[15] = 'centos';
+        template_images[21] = 'ubuntu';
+        template_images[23] = 'ubuntu';
+        template_images[24] = 'windows-server-2008';
+        template_images[25] = 'windows-server-2012';
+        template_images[15] = 'centos';
+        template_images[14] = 'centos';
+        template_images[13] = 'centos';
+        template_images[10] = 'centos';
+        template_images[3] = 'debian';
+        template_images[9] = 'windows-7';
+        template_images[2] = 'ubuntu';
+        template_images[1] = 'centos';
+        template_images[28] = 'minecraft';
+        template_images[16] = 'ubuntu';
+        template_images[75] = 'docker';
+
         var templates = {};
         templates.response = dataStorage.getTemplates() || [];
         return {
@@ -50,6 +72,14 @@ angular.module('starter.services', [])
             clear: function() {
                 templates.response = [];
                 dataStorage.clearStorageField("templates");
+            },
+            getTemplateImage: function(id) {
+                if (template_images[id]) {
+                    return 'img/' + template_images[id]+'.png';
+                } else {
+                    //TODO: add unknown image
+                    return 'img/white.png';
+                }
             }
         };
     })
