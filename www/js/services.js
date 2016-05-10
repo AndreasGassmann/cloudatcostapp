@@ -41,25 +41,35 @@ angular.module('starter.services', [])
     .factory('Templates', function(dataStorage) {
 
         var template_images = [];
-        template_images[74] = 'freebsd';
-        template_images[26] = 'centos';
-        template_images[27] = 'ubuntu';
+
+        // From the CloudAtCost Panel HTML
+        template_images[1] = 'centos';
         template_images[15] = 'centos';
-        template_images[21] = 'ubuntu';
-        template_images[23] = 'ubuntu';
+        template_images[3] = 'debian';
+        template_images[19] = 'docker';
+        template_images[18] = 'freebsd';
+        template_images[17] = 'minecraft';
+        template_images[16] = 'ubuntu';
+        template_images[13] = 'windows-server-2008';
+        template_images[14] = 'windows-server-2012';
+        template_images[4] = 'windows-7';
+
+        // From the API
+        template_images[9] = 'windows-7';
         template_images[24] = 'windows-server-2008';
         template_images[25] = 'windows-server-2012';
-        template_images[15] = 'centos';
-        template_images[14] = 'centos';
-        template_images[13] = 'centos';
-        template_images[10] = 'centos';
-        template_images[3] = 'debian';
-        template_images[9] = 'windows-7';
-        template_images[2] = 'ubuntu';
-        template_images[1] = 'centos';
+        template_images[26] = 'centos';
+        template_images[27] = 'ubuntu';
         template_images[28] = 'minecraft';
-        template_images[16] = 'ubuntu';
+        template_images[74] = 'freebsd';
         template_images[75] = 'docker';
+
+        // From testing
+        template_images[21] = 'ubuntu';
+        template_images[23] = 'ubuntu';
+        template_images[10] = 'centos';
+        template_images[2] = 'ubuntu';
+        template_images[16] = 'ubuntu';
 
         var templates = {};
         templates.response = dataStorage.getTemplates() || [];
