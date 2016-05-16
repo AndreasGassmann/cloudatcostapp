@@ -864,11 +864,21 @@ angular.module('starter.services', [])
     })
 
     .factory('cacStatus', function($http) {
+        var cacheTime;
+        var cache = {};
         var getStatus = function(callback) {
+            if (cache) {
+                if ((new Date() - cacheTime) < 5 * 60 * 1000) {
+                    callback(cache.cacStatus);
+                    return;
+                }
+            }
             $http({
                 method: 'GET',
                 url: 'http://api.cloudatcostapp.com/v1/'
             }).success(function(data, status, headers, config){
+                cacheTime = new Date();
+                cache = data;
                 callback(data.cacStatus);
             }).error(function(data, status, headers, config){
                 callback([]);
