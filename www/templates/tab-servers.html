@@ -1,4 +1,9 @@
 <ion-view view-title="Servers">
+    <ion-nav-buttons side="secondary">
+        <button class="button" ng-click="openPopover($event)">
+            <i class="icon ion-person-stalker"></i>
+        </button>
+    </ion-nav-buttons>
     <ion-content has-bouncing="true" start-y="45">
         <ion-refresher
                 pulling-text="Pull to refresh..."

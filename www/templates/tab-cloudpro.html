@@ -1,4 +1,9 @@
 <ion-view view-title="CloudPRO">
+    <ion-nav-buttons side="secondary">
+        <button class="button" ng-click="openPopover($event)">
+            <i class="icon ion-person-stalker"></i>
+        </button>
+    </ion-nav-buttons>
     <ion-content has-bouncing="true" padding="true">
         <ion-refresher
                 pulling-text="Pull to refresh..."

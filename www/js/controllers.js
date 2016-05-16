@@ -1,6 +1,15 @@
 angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
-    .controller('DashCtrl', function($scope, $ionicHistory, $ionicPopover, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+    .controller('DashCtrl', function($scope, $ionicHistory, $ionicPopover, $ionicLoading, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+
+        $scope.showLoading = function() {
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+        };
+        $scope.hideLoading = function(){
+            $ionicLoading.hide();
+        };
 
         $scope.accounts = dataStorage.getAccounts();
 
@@ -18,14 +27,20 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.activateAccount = function(account) {
             dataStorage.saveEmail(account.email);
             dataStorage.saveAPIKey(account.APIKey);
+            $scope.showLoading();
+            $scope.refresh(function() {
+                $scope.hideLoading();
+            });
             $scope.popover.hide();
-            dataRequestService.getData(function() {});
         };
 
-        $scope.refresh = function() {
+        $scope.refresh = function(callback) {
             dataRequestService.getData(function() {
                 $ionicHistory.clearHistory();
                 $scope.$broadcast('scroll.refreshComplete');
+                if (callback) {
+                    callback();
+                }
             });
         };
 
@@ -46,11 +61,46 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         $scope.chartOptions = {thickness: 10, mode: "gauge", total: 100};
     })
 
-    .controller('ServerCtrl', function($scope, $ionicHistory, dataRequestService, Servers, Templates) {
-        $scope.refresh = function() {
+    .controller('ServerCtrl', function($scope, $ionicHistory, $ionicPopover, $ionicLoading, dataRequestService, dataStorage, Servers, Templates) {
+        $scope.showLoading = function() {
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+        };
+        $scope.hideLoading = function(){
+            $ionicLoading.hide();
+        };
+
+        $scope.accounts = dataStorage.getAccounts();
+
+        $ionicPopover.fromTemplateUrl('templates/accounts-popover.html', {
+            scope: $scope
+        }).then(function(popover) {
+            $scope.popover = popover;
+        });
+
+        $scope.openPopover = function($event) {
+            $scope.accounts = dataStorage.getAccounts();
+            $scope.popover.show($event);
+        };
+
+        $scope.activateAccount = function(account) {
+            dataStorage.saveEmail(account.email);
+            dataStorage.saveAPIKey(account.APIKey);
+            $scope.showLoading();
+            $scope.refresh(function() {
+                $scope.hideLoading();
+            });
+            $scope.popover.hide();
+        };
+
+        $scope.refresh = function(callback) {
             dataRequestService.getData(function() {
                 $ionicHistory.clearCache();
                 $scope.$broadcast('scroll.refreshComplete');
+                if (callback) {
+                    callback();
+                }
             });
         };
 
@@ -282,12 +332,46 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
     })
 
-    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, $ionicHistory, dataRequestService, Templates, Cloudpro) {
+    .controller('CloudproCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $ionicPopover, $ionicLoading, dataStorage, dataRequestService, Templates, Cloudpro) {
+        $scope.showLoading = function() {
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+        };
+        $scope.hideLoading = function(){
+            $ionicLoading.hide();
+        };
 
-        $scope.refresh = function() {
+        $scope.accounts = dataStorage.getAccounts();
+
+        $ionicPopover.fromTemplateUrl('templates/accounts-popover.html', {
+            scope: $scope
+        }).then(function(popover) {
+            $scope.popover = popover;
+        });
+
+        $scope.openPopover = function($event) {
+            $scope.accounts = dataStorage.getAccounts();
+            $scope.popover.show($event);
+        };
+
+        $scope.activateAccount = function(account) {
+            dataStorage.saveEmail(account.email);
+            dataStorage.saveAPIKey(account.APIKey);
+            $scope.showLoading();
+            $scope.refresh(function() {
+                $scope.hideLoading();
+            });
+            $scope.popover.hide();
+        };
+
+        $scope.refresh = function(callback) {
             dataRequestService.getData(function() {
                 $ionicHistory.clearCache();
                 $scope.$broadcast('scroll.refreshComplete');
+                if (callback) {
+                    callback();
+                }
             });
         };
 
