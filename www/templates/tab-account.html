@@ -1,28 +1,25 @@
-<ion-view view-title="Account">
+<ion-view view-title="Account" cache-view="false">
     <ion-content has-bouncing="true" class="padding">
         <ion-list>
-            <div ng-if="cacStatus.length >= 0" class="card">
+            <div ng-show="cacStatus.length" class="card">
                 <div class="item item-divider">CloudAtCost Status</div>
                 <div ng-repeat="status in cacStatus" class="item item-text-wrap" ng-class="status.level === 0 ? 'greenbg' : 'redbg'">
                     <h2><strong>{{status.title}} - {{status.date | date}}</strong></h2>
                     {{status.message}}
                 </div>
             </div>
-            <label class="item item-input">
-                <input ng-model="settings.email" type="email" placeholder="Email">
-            </label>
-            <label class="item item-input">
-                <input ng-model="settings.APIKey" type="{{settings.showAPIKey ? 'text' : 'password'}}"
-                       placeholder="API-Key">
-            </label>
-            <ion-toggle ng-model="settings.showAPIKey">
-                Show API-Key
-            </ion-toggle>
-            <button ng-click="saveData()" class="button button-block button-positive">
-                Save
-            </button>
-            <button ng-click="scanBarcode()" class="button button-block button-positive">
-                Scan QR-Code
+            <div class="card">
+                <div class="item item-divider">Accounts</div>
+                <div class="item" ng-if="accounts.length == 0">No Accounts</div>
+                <a class="item" ng-repeat="account in accounts" href="#/tab/account/{{account.email}}">
+                    {{account.email === email ? '(active)' : ''}} {{account.email}}
+                    <div class="item-icon-right">
+                        <i class="icon ion-ios-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+            <button ng-click="showAccountModal()" class="button button-block button-positive">
+                Add Account
             </button>
             <div class="card">
                 <div class="item item-divider">Instructions</div>
@@ -30,7 +27,7 @@
                     1. Log in to your CloudAtCost Panel<br />
                     2. Click on Settings on the top right<br />
                     3. Generate an API Key<br />
-                    4. Enter your Email and API Key above<br />
+                    4. Scan the QR code or enter your Email and API Key manually<br />
                     5. Add your devices current IP to the "API Access IP" field on the CloudAtCost panel.
                        If you don't know your IP, you can find it out by clicking on the button below
                 </div>

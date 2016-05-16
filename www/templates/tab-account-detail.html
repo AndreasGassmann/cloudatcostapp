@@ -1,0 +1,22 @@
+<ion-view view-title="Account">
+    <ion-content has-bouncing="true" class="padding">
+        <ion-list>
+            <label class="item item-input">
+                <input ng-model="email" type="text" placeholder="Email">
+            </label>
+            <label class="item item-input">
+                <input ng-model="APIKey" type="{{showAPIKey ? 'text' : 'password'}}"
+                       placeholder="API-Key">
+            </label>
+            <ion-toggle ng-model="showAPIKey">
+                Show API-Key
+            </ion-toggle>
+            <button ng-click="makeActive()" class="button button-block button-positive">
+                Make Active
+            </button>
+            <button ng-click="deleteAccount()" class="button button-block button-positive">
+                Delete Account
+            </button>
+        </ion-list>
+    </ion-content>
+</ion-view>

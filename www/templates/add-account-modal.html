@@ -1,0 +1,26 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">Add Account</h1>
+        <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <label class="item item-input">
+                <input ng-model="newAccount.email" type="text" placeholder="Email">
+            </label>
+            <label class="item item-input">
+                <input ng-model="newAccount.APIKey" type="{{newAccount.showAPIKey ? 'text' : 'password'}}"
+                       placeholder="API-Key">
+            </label>
+            <ion-toggle ng-model="newAccount.showAPIKey">
+                Show API-Key
+            </ion-toggle>
+            <button ng-click="saveAccountModal(newAccount)" class="button button-block button-positive">
+                Save
+            </button>
+            <button ng-click="scanBarcode()" class="button button-block button-positive">
+                Scan QR-Code
+            </button>
+        </div>
+    </ion-content>
+</ion-modal-view>

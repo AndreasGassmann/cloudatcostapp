@@ -1,6 +1,27 @@
 angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
 
-    .controller('DashCtrl', function($scope, $ionicHistory, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+    .controller('DashCtrl', function($scope, $ionicHistory, $ionicPopover, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+
+        $scope.accounts = dataStorage.getAccounts();
+
+        $ionicPopover.fromTemplateUrl('templates/accounts-popover.html', {
+            scope: $scope
+        }).then(function(popover) {
+            $scope.popover = popover;
+        });
+
+        $scope.openPopover = function($event) {
+            $scope.accounts = dataStorage.getAccounts();
+            $scope.popover.show($event);
+        };
+
+        $scope.activateAccount = function(account) {
+            dataStorage.saveEmail(account.email);
+            dataStorage.saveAPIKey(account.APIKey);
+            $scope.popover.hide();
+            dataRequestService.getData(function() {});
+        };
+
         $scope.refresh = function() {
             dataRequestService.getData(function() {
                 $ionicHistory.clearHistory();
@@ -364,14 +385,10 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates, cacStatus) {
+    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $ionicModal, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates, cacStatus) {
         $scope.currentIP = "";
 
-        $scope.settings = {
-            email: dataStorage.getEmail(),
-            APIKey: dataStorage.getAPIKey(),
-            showAPIKey: false
-        };
+        $scope.accounts = dataStorage.getAccounts();
 
         $scope.cacStatus = [];
 
@@ -379,12 +396,20 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             $scope.cacStatus = data;
         });
 
-        $scope.saveData = function() {
-            dataStorage.saveEmail($scope.settings.email);
-            dataStorage.saveAPIKey($scope.settings.APIKey);
+        $scope.email = dataStorage.getEmail();
+
+        // Use this method if modal is open, so when user clicks save or reads QR code
+        $scope.saveAccountModal = function(newAccount) {
+            $scope.modal.hide();
+            $scope.saveAccount(newAccount);
+        };
+
+        $scope.saveAccount = function(newAccount) {
+            dataStorage.saveAccount(newAccount);
             dataRequestService.getData(function() {});
             $state.transitionTo("tab.dash");
         };
+
         $scope.deleteData = function() {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete Data',
@@ -426,9 +451,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
                 if (imageData.text) {
                     // todo: verify input data
                     var text = imageData.text.split(',');
-                    $scope.settings.email = text[1];
-                    $scope.settings.APIKey = text[0];
-                    $scope.saveData();
+                    $scope.saveAccountModal({email: text[1], APIKey: text[0]});
                 }
                 //console.log("Barcode Format -> " + imageData.format);
                 //console.log("Cancelled -> " + imageData.cancelled);
@@ -441,4 +464,44 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             });
         };
 
+        $scope.showAccountModal = function() {
+            $scope.modal.show();
+        };
+
+        $ionicModal.fromTemplateUrl('templates/add-account-modal.html', {
+            scope: $scope
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+
+        if ($scope.accounts.length === 0) {
+            var email = dataStorage.getEmail();
+            var APIKey = dataStorage.getAPIKey();
+            if(email.length > 0 && APIKey.length > 0) {
+                $scope.saveAccount({email: email, APIKey: APIKey});
+            }
+        }
+
+    })
+
+    .controller('AccountDetailCtrl', function($scope, $state, $stateParams, $ionicPopup, dataStorage, dataRequestService) {
+        console.log($stateParams.email);
+        var account = dataStorage.getAccountByEmail($stateParams.email);
+        if (!account.email) {
+            $state.transitionTo("tab.account");
+        }
+        $scope.email = account.email;
+        $scope.APIKey = account.APIKey;
+
+        $scope.deleteAccount = function() {
+            dataStorage.deleteAccount(account);
+            $state.transitionTo("tab.account");
+        };
+
+        $scope.makeActive = function() {
+            dataStorage.saveEmail(account.email);
+            dataStorage.saveAPIKey(account.APIKey);
+            dataRequestService.getData(function() {});
+            $state.transitionTo("tab.dash");
+        }
     });

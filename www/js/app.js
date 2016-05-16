@@ -95,7 +95,17 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
                 controller: 'AccountCtrl'
               }
             }
-          });
+          })
+
+          .state('tab.account-detail', {
+          url: '/account/:email',
+          views: {
+              'tab-account': {
+                  templateUrl: 'templates/tab-account-detail.html',
+                  controller: 'AccountDetailCtrl'
+              }
+          }
+      });
 
       // if none of the above states are matched, use this as the fallback
       $urlRouterProvider.otherwise('/tab/dash');

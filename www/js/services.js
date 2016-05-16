@@ -733,6 +733,24 @@ angular.module('starter.services', [])
             saveCloudpro: function(cloudpro) {
                 window.localStorage.setItem("cloudpro", AES.encrypt(JSON.stringify(cloudpro)));
             },
+            saveAccount: function(newAccount) {
+                var accounts = this.getAccounts();
+
+                var exists = false;
+                accounts.forEach(function(account) {
+                    if (account.email === newAccount.email) {
+                        exists = true;
+                    }
+                });
+
+                if (!exists) {
+                    accounts.push(newAccount);
+                    window.localStorage.setItem("accounts", AES.encrypt(JSON.stringify(accounts)));
+
+                    this.saveEmail(newAccount.email);
+                    this.saveAPIKey(newAccount.APIKey);
+                }
+            },
             getEmail: function() {
                 if (window.localStorage.getItem("email")) {
                     return AES.decrypt(window.localStorage.getItem("email"));
@@ -782,10 +800,49 @@ angular.module('starter.services', [])
                     return [];
                 }
             },
+            getAccounts: function() {
+                if (window.localStorage.getItem("accounts")) {
+                    return isJson(AES.decrypt(localStorage.getItem("accounts"))) ? JSON.parse(AES.decrypt(window.localStorage.getItem("accounts"))) : [];
+                } else {
+                    return [];
+                }
+            },
+            getAccountByEmail: function(email) {
+                var currentAccount = {};
+                this.getAccounts().forEach(function(account) {
+                    if(account.email === email) {
+                        currentAccount = account;
+                    }
+                });
+                return currentAccount;
+            },
+            deleteAccount: function(oldAccount) {
+                var accounts = this.getAccounts();
+
+                var found = false;
+                var delIndex = 0;
+                accounts.forEach(function(account, index) {
+                    if (account.email === oldAccount.email) {
+                        found = true;
+                        delIndex = index;
+                    }
+                });
+
+                if (this.getEmail() === oldAccount.email && this.getAPIKey() === oldAccount.APIKey) {
+                    this.saveEmail('');
+                    this.saveAPIKey('');
+                }
+
+                if (found) {
+                    accounts.splice(delIndex, 1);
+                    window.localStorage.setItem("accounts", AES.encrypt(JSON.stringify(accounts)));
+                }
+            },
             clearStorage: function() {
                 window.localStorage.removeItem("email");
                 window.localStorage.removeItem("APIKey");
                 window.localStorage.removeItem("responseTime");
+                window.localStorage.removeItem("accounts");
             },
             clearStorageField: function (string) {
                 window.localStorage.removeItem(string);
