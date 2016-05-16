@@ -848,7 +848,6 @@ angular.module('starter.services', [])
                 window.localStorage.removeItem(string);
             },
             updateStorage: function(callback) {
-                console.log("Email" + this.getEmail());
                 this.saveEmail(this.getEmail());
                 this.saveAPIKey(this.getAPIKey());
 

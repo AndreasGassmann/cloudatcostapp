@@ -501,8 +501,8 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             });
             confirmPopup.then(function(res) {
                 if(res) {
-                    $scope.settings.email = "";
-                    $scope.settings.APIKey = "";
+                    $scope.email = "";
+                    $scope.APIKey = "";
                     $scope.currentIP = "";
                     dataRequestService.clear();
                     dataStorage.clearStorage();
