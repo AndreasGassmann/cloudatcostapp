@@ -1,6 +1,13 @@
 <ion-view view-title="Account">
     <ion-content has-bouncing="true" class="padding">
         <ion-list>
+            <div ng-if="cacStatus.length >= 0" class="card">
+                <div class="item item-divider">CloudAtCost Status</div>
+                <div ng-repeat="status in cacStatus" class="item item-text-wrap" ng-class="status.level === 0 ? 'greenbg' : 'redbg'">
+                    <h2><strong>{{status.title}} - {{status.date | date}}</strong></h2>
+                    {{status.message}}
+                </div>
+            </div>
             <label class="item item-input">
                 <input ng-model="settings.email" type="email" placeholder="Email">
             </label>

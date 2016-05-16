@@ -364,7 +364,7 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
         };
     })
 
-    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates) {
+    .controller('AccountCtrl', function($scope, $state, $ionicPopup, $cordovaBarcodeScanner, dataRequestService, dataStorage, Servers, Tasks, Templates, cacStatus) {
         $scope.currentIP = "";
 
         $scope.settings = {
@@ -372,6 +372,12 @@ angular.module('starter.controllers', ['n3-pie-chart', 'angularMoment'])
             APIKey: dataStorage.getAPIKey(),
             showAPIKey: false
         };
+
+        $scope.cacStatus = [];
+
+        cacStatus.getStatus(function(data) {
+            $scope.cacStatus = data;
+        });
 
         $scope.saveData = function() {
             dataStorage.saveEmail($scope.settings.email);

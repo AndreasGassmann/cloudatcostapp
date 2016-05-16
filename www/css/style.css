@@ -32,3 +32,10 @@
   padding-top: 7px;
   position: absolute;
 }
+
+.greenbg {
+    background-color: #EEFFEE;
+}
+.redbg {
+    background-color: #FFDDDD;
+}

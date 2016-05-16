@@ -806,6 +806,23 @@ angular.module('starter.services', [])
         };
     })
 
+    .factory('cacStatus', function($http) {
+        var getStatus = function(callback) {
+            $http({
+                method: 'GET',
+                url: 'http://api.cloudatcostapp.com/v1/'
+            }).success(function(data, status, headers, config){
+                callback(data.cacStatus);
+            }).error(function(data, status, headers, config){
+                callback([]);
+            });
+        };
+
+        return {
+            getStatus: getStatus
+        };
+    })
+
     .factory('AES', function() {
         var passphrase = "SECRET_PASS_PHRASE";
 
