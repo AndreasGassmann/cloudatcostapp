@@ -1,7 +1,7 @@
 {
   "name": "cloudatcost",
-  "version": "1.2.2",
-  "description": "CloudAtCost: An Ionic project",
+  "version": "1.3.0",
+  "description": "A mobile app to manage your CloudAtCost account",
   "scripts": {
     "start": "ionic serve",
     "emulate:ios": "ionic emulate ios --target iPhone-6",
