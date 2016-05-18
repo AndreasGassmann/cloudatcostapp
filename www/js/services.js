@@ -304,7 +304,7 @@ angular.module('starter.services', [])
         var getIp = function(callback) {
             $http({
                 method: 'GET',
-                url: 'http://api.cloudatcostapp.com/v1/'
+                url: 'https://api.cloudatcostapp.com/v1/'
             }).success(function(data, status, headers, config){
                 callback(" Your current IP: " + data.requestIP);
             }).error(function(data, status, headers, config){
@@ -874,7 +874,7 @@ angular.module('starter.services', [])
             }
             $http({
                 method: 'GET',
-                url: 'http://api.cloudatcostapp.com/v1/'
+                url: 'https://api.cloudatcostapp.com/v1/'
             }).success(function(data, status, headers, config){
                 cacheTime = new Date();
                 cache = data;
